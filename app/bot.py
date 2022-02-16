@@ -1,23 +1,23 @@
 class Bot:
 
     def __init__(self):
-        greeting()
+        self.greeting()
 
-    def greeting():
+    def greeting(self):
         print("Hi!")
         options = "Please choose from one of the following options:\n a)Store information\n b)Product information\n c)Other concerns"
         print(options)
-        while(true):
-            userInput = lower(str(input()))
+        while(True):
+            userInput = input().lower()
             if(userInput not in ["a","b","c","a)","b)","c)"]):
                 print("Incorrect input! Please enter a,b or c: ")
             else:
                 if(userInput == ["a","a)"]):
-                    getStoreInfo()
+                    self.getStoreInfo()
                 elif(userInput == ["c","c)"]):
-                    getCustomerService()
+                    self.getCustomerService()
                 else:
-                    getProductInfo()
+                    self.getProductInfo()
                # print("Is there anything else I could help you with? (Yes/No)")
                 #userInput = lower(str(input()))
                 #if(userInput not in ["yes","no"]):
