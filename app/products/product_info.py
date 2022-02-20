@@ -9,6 +9,18 @@ mock_product_data = [
      "price_scale": "per box", "in_stock": True},
 ]
 
+STORE_INFO = {
+    "name": "Walmart",
+    "address": "123 Main St",
+    "city": "Toronto",
+    "province": "ON",
+    "postal_code": "M5V 2K7",
+    "country": "Canada",
+    "phone": "416-555-1234",
+    "website": "https://www.walmart.ca",
+    "opening_hours": "Mon-Fri: 9am-5pm",
+    "price": "0.99 - 5.99 cad",
+}
 
 class StoreProductHandler:
     """
@@ -126,7 +138,32 @@ class StoreProductHandler:
     # The first item indicates whether this request is about store information.
     # If false, the other items must be None.
     def parse_store_info(self, message) -> tuple:
-        return (False, "store_info", {})
+        is_store = False
+        store_words = {"request": None}
+        
+        if "where" or "location" or "address" or "street" or "address" in message:
+            store_words["request"] = "address"
+        elif "when" or "open" or "close" or "opening" or "closing" or "hours" in message:
+            store_words["request"] = "opening_hours"
+        elif "price" or "price range" or "price range" in message:
+            store_words["request"] = "price"
+        elif "phone" or "phone number" or "number" in message:
+            store_words["request"] = "phone"
+        elif "website" or "web" or "url" in message:
+            store_words["request"] = "website"
+        elif "city" or "town" or "city" in message:
+            store_words["request"] = "city"
+        elif "province" in message:
+            store_words["request"] = "province"
+        elif "postal" or "zip" in message:
+            store_words["request"] = "postal_code"
+        elif "country" in message:
+            store_words["request"] = "country"
+
+        if store_words["request"] is not None:
+            is_store = True
+
+        return (is_store, "store_info", store_words)
 
     # @Paul @Thuan
     # TODO: Implement the method to return proper response for product information.
@@ -162,7 +199,8 @@ class StoreProductHandler:
     def handle_store_info(self, message=None, **kwargs) -> str:
         # kwargs are arguments such as product_name, price, operators (<. >)
         # This really depends on how you define your parser
-        pass
+        reply = "It is {}".format(STORE_INFO[kwargs["request"]])
+        return reply
 
     # @Thuan @Paul @Quan
     # TODO: Once database is improved for use, we can have a more flexible way to retrieve data.
