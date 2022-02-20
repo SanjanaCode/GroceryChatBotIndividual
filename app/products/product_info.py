@@ -3,9 +3,9 @@ import os
 # @Quan @Paul @Thuan
 # TODO: Add mock data if needed
 mock_product_data = [
-    {"id": "4011", "name": "Banana", "price": "0.67", "currency": "cad",
+    {"id": "4011", "name": "banana", "names": "bananas", "price": "0.67",
      "price_scale": "per kg", "in_stock": True},
-    {"id": "3022", "name": "Strawberry", "price": "3.99", "currency": "cad",
+    {"id": "3022", "name": "strawberry", "names": "strawberries", "price": "3.99",
      "price_scale": "per box", "in_stock": True},
 ]
 
@@ -105,7 +105,20 @@ class StoreProductHandler:
     # This method should return a tuple of (boolean, str, dict).
     # The first item indicates whether this request is about product information.
     def parse_product_info(self, message) -> tuple:
-        return (True, "product_info", {})
+        is_prod = False
+        prod_words = {"request": None, "product_name": None}
+        if "price" or "cost" or "how much" in message:
+            prod_words["request"] = "price"
+            is_prod = True
+        elif "stock" or "how many" in message:
+            prod_words["request"] = "stock"
+            is_prod = True
+        
+        for prod in mock_product_data:
+            if prod["id"] or prod["name"] or prod["names"] in message:
+                prod_words["product_name"] = prod["names"]
+
+        return (is_prod, "product_info", prod_words)
 
     # @Quan @Paul
     # TODO: Implement helper method to parse store information.
@@ -122,7 +135,26 @@ class StoreProductHandler:
     def handle_product_info(self, message=None, **kwargs) -> str:
         # kwargs are arguments such as product_name, price, operators (<. >)
         # This really depends on how you define your parser
-        pass
+        prod_price, prod_scale, prod_stock, reply = None
+
+        prod_name = kwargs.get("product_name")
+        for prod in mock_product_data:
+            if prod["names"] == prod_name:
+                prod_price = prod["price"]
+                prod_scale = prod["price_scale"]
+                prod_stock = prod["in_stock"]
+                break
+        
+        prod_msg_type = kwargs.get("requests")
+        if prod_msg_type == "price":
+            reply = "%s cost $%s %s." % (prod_name.capitalize(), prod_price, prod_scale)
+        elif prod_msg_type == "stock":
+            if prod_stock == True:
+                reply = "%s are in stock." % (prod_name.capitalize())
+            else:
+                reply = "%s are out of stock." % (prod_name.capitalize())
+        
+        return reply
 
     # @Quan @Paul
     # TODO: Implement the method to return proper response for product information.
