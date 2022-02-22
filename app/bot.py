@@ -1,66 +1,37 @@
 from google.cloud import dialogflow
+from app.products.product_info import StoreInfoHandler
+import random
 class Bot:
+    def __init__(self):
+        project_id = "grocery-chat-bot"
+        #generate unique session id for each conversation. Session id is for continuation of conversation
+        #TODO: create unique number
+        self.session_id = random.randint(1, 100)
+        #one session is only for one customer
+        self.session_client = dialogflow.SessionsClient()
+        self.language_code = "en-US"
+        self.session = self.session_client.session_path(project_id, self.session_id)
+        #initiate conversation with customer
+        self.start_conversation()
 
-    # def __init__(self):
-    #     self.greeting()
-
-    # def greeting(self):
-    #     print("Hi!")
-    #     options = "Please choose from one of the following options:\n a)Store information\n b)Product information\n c)Other concerns\n d)Exit"
-    #     while(True):
-    #         print(options)
-    #         userInput = input().lower()
-    #         if(userInput not in ["a","b","c","d","a)","b)","c)","d)"]):
-    #             print("Incorrect input! Please enter a,b or c: ")
-    #         else:
-    #             if(userInput in ["a","a)"]):
-    #                 self.getStoreInfo()
-    #             elif(userInput in ["b","b)"]):
-    #                 self.getProductInfo()
-    #             elif(userInput in ["c","c)"]):
-    #                 self.getCustomerService()
-    #             else:
-    #                 print("Goodbye!")
-    #                 break
-    #             print("Is there anything else I could help you with?")
-
-
-
-    # def getStoreInfo(self):
-    #     print("store info")
-
-    # def getCustomerService(self):
-    #     print("customer service info")
+    def start_conversation(self):
+        user_input = input("Hello, how can I help you?\n")
+        while True:
+            intent = self.detect_intent_texts(user_input)
+            if intent == "Done-conversation":
+                break
+            else:
+                print("Ok, here is the answer")
+                user_input = input("What else can I help you?\n")
     
-    # def getProductInfo(self):
-    #     print("product info")
+    def detect_intent_texts(self,text):
 
-    
-    def detect_intent_texts(self,text, project_id = "grocery-chat-bot", session_id = "test", language_code = "en-US"):
-      """Returns the result of detect intent with texts as inputs.
+        text_input = dialogflow.TextInput(text=text, language_code=self.language_code)
 
-      Using the same `session_id` between requests allows continuation
-      of the conversation."""
-      
-      session_client = dialogflow.SessionsClient()
+        query_input = dialogflow.QueryInput(text=text_input)
 
-      session = session_client.session_path(project_id, session_id)
-      print("Session path: {}\n".format(session))
+        response = self.session_client.detect_intent(
+            request={"session": self.session, "query_input": query_input}
+        )
 
-      text_input = dialogflow.TextInput(text=text, language_code=language_code)
-
-      query_input = dialogflow.QueryInput(text=text_input)
-
-      response = session_client.detect_intent(
-          request={"session": session, "query_input": query_input}
-      )
-
-      print("=" * 20)
-      print("Query text: {}".format(response.query_result.query_text))
-      print(
-          "Detected intent: {} (confidence: {})\n".format(
-              response.query_result.intent.display_name,
-              response.query_result.intent_detection_confidence,
-          )
-      )
-      print("Fulfillment text: {}\n".format(response.query_result.fulfillment_text))
+        return response.query_result.intent.display_name

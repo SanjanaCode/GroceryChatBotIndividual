@@ -1,0 +1,2 @@
+class StoreInfoHandler:
+    pass
