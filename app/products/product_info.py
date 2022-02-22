@@ -1,5 +1,5 @@
 import os
-
+from app.products.database import SQLiteDatabase, DatabaseType
 # @Quan @Paul @Thuan
 # TODO: Add mock data if needed
 mock_product_data = [
@@ -21,6 +21,7 @@ STORE_INFO = {
     "opening_hours": "Mon-Fri: 9am-5pm",
     "price": "0.99 - 5.99 cad",
 }
+
 
 class StoreProductHandler:
     """
@@ -52,6 +53,18 @@ class StoreProductHandler:
             "product_info": self.handle_product_info,
             "store_info": self.handle_store_info
         }
+
+        # Initialize a mock database if development environment
+        if self.runtime_mode == "DEV":
+            self.db = SQLiteDatabase(DatabaseType.MEMORY)
+            self.db.connect()  # Start a connection
+            self.db.init_database()  # Initialize the database
+
+    def dispose(self):
+        """
+        Call this methods to release any resources with this minibot (i.e. database connection).
+        """
+        self.db.close()
 
     def handle(self, message: str) -> str:
         """
@@ -125,7 +138,7 @@ class StoreProductHandler:
         elif "stock" or "how many" in message:
             prod_words["request"] = "stock"
             is_prod = True
-        
+
         for prod in mock_product_data:
             if prod["id"] or prod["name"] or prod["names"] in message:
                 prod_words["product_name"] = prod["names"]
@@ -140,7 +153,7 @@ class StoreProductHandler:
     def parse_store_info(self, message) -> tuple:
         is_store = False
         store_words = {"request": None}
-        
+
         if "where" or "location" or "address" or "street" or "address" in message:
             store_words["request"] = "address"
         elif "when" or "open" or "close" or "opening" or "closing" or "hours" in message:
@@ -181,16 +194,17 @@ class StoreProductHandler:
                 prod_scale = prod["price_scale"]
                 prod_stock = prod["in_stock"]
                 break
-        
+
         prod_msg_type = kwargs.get("requests")
         if prod_msg_type == "price":
-            reply = "%s cost $%s %s." % (prod_name.capitalize(), prod_price, prod_scale)
+            reply = "%s cost $%s %s." % (
+                prod_name.capitalize(), prod_price, prod_scale)
         elif prod_msg_type == "stock":
             if prod_stock == True:
                 reply = "%s are in stock." % (prod_name.capitalize())
             else:
                 reply = "%s are out of stock." % (prod_name.capitalize())
-        
+
         return reply
 
     # @Quan @Paul
