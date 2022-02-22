@@ -1,6 +1,6 @@
 import pytest
-from app.products.product_info import StoreProductHandler
-from app.products.database import STORE_INFO
+from products.product_info import StoreProductHandler
+from products.database import STORE_INFO
 
 class TestStoreInfo:
     # def test_handler_name(self):
