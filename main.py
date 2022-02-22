@@ -7,4 +7,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-  #detect_intent_texts("When does the store close?")
