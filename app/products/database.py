@@ -33,6 +33,9 @@ class DatabaseType(Enum):
 
 
 class SQLiteDatabase:
+    """
+    Class to interact with the database.
+    """
 
     def __init__(self, type: DatabaseType, **kwargs):
         # Initialize the information for the database
@@ -40,6 +43,9 @@ class SQLiteDatabase:
             os.getcwd(), "mock.db")
 
     def init_database(self):
+        """
+        Initialize the database.
+        """
         if not self.conn:
             return
 
@@ -69,12 +75,31 @@ class SQLiteDatabase:
         self.conn = sqlite3.connect(self.database_config)
 
     def close(self):
+        """
+        Close the connection to the database.
+        """
         self.conn.close()
 
     def execute_query(self, query):
+        """
+        Execute a select query.
+
+        Parameters
+        ----------
+        query: str
+            The select query to execute.
+        """
         return self.conn.execute(query)
 
     def execute_update(self, update_query):
+        """
+        Execute an update query.
+
+        Parameters
+        ----------
+        update_query: str
+            The update query to execute.
+        """
         self.conn.execute(update_query)
 
 
