@@ -56,9 +56,3 @@ class TestStoreInfo:
         message = "What are the opening hours of the store?"
         expectedOutput = "It is {}".format(STORE_INFO["opening_hours"])
         assert(classTest.handle(message) == expectedOutput)
-
-    def test_handler_price_range(self):
-        classTest = StoreProductHandler()
-        message = "What is the store's price range?"
-        expectedOutput = "It is {}".format(STORE_INFO["price"])
-        assert(classTest.handle(message) == expectedOutput)

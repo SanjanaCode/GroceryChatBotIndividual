@@ -60,8 +60,6 @@ class StoreProductHandler:
         self.opening_pattern = re.compile(
             r"(when|open|close|opening|closing|hours)", re.IGNORECASE)
         self.phone_pattern = re.compile(r"(phone|number)", re.IGNORECASE)
-        self.price_range_pattern = re.compile(
-            r"(price range|range)", re.IGNORECASE)
         self.website_pattern = re.compile(r"(website|url|web)", re.IGNORECASE)
         self.city_pattern = re.compile(r"(city|town)", re.IGNORECASE)
         self.province_pattern = re.compile(r"(province|state)", re.IGNORECASE)
@@ -176,8 +174,6 @@ class StoreProductHandler:
             store_words["request"] = "address"
         elif self.opening_pattern.search(message):
             store_words["request"] = "opening_hours"
-        elif self.price_range_pattern.search(message):
-            store_words["request"] = "price"
         elif self.phone_pattern.search(message):
             store_words["request"] = "phone"
         elif self.website_pattern.search(message):
