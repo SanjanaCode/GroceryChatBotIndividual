@@ -38,6 +38,18 @@ class StoreProductHandler:
         self.price_pattern = re.compile(
             r"(price|cost|how much)", re.IGNORECASE)
         self.stock_pattern = re.compile(r"(stock|how many)", re.IGNORECASE)
+        self.location_pattern = re.compile(
+            r"(where|location|address|street)", re.IGNORECASE)
+        self.opening_pattern = re.compile(
+            r"(when|open|close|opening|closing|hours)", re.IGNORECASE)
+        self.phone_pattern = re.compile(r"(phone|number)", re.IGNORECASE)
+        self.price_range_pattern = re.compile(
+            r"(price range|range)", re.IGNORECASE)
+        self.website_pattern = re.compile(r"(website|url|web)", re.IGNORECASE)
+        self.city_pattern = re.compile(r"(city|town)", re.IGNORECASE)
+        self.province_pattern = re.compile(r"(province|state)", re.IGNORECASE)
+        self.country_pattern = re.compile(r"(country)", re.IGNORECASE)
+        self.postal_code_pattern = re.compile(r"(postal|zip)", re.IGNORECASE)
 
         # Initialize a mock database if development environment
         if self.runtime_mode == "DEV":
@@ -151,23 +163,23 @@ class StoreProductHandler:
         is_store = False
         store_words = {"request": None}
 
-        if "where" or "location" or "address" or "street" or "address" in message:
+        if self.location_pattern.match(message):
             store_words["request"] = "address"
-        elif "when" or "open" or "close" or "opening" or "closing" or "hours" in message:
+        elif self.opening_pattern.match(message):
             store_words["request"] = "opening_hours"
-        elif "price" or "price range" or "price range" in message:
+        elif self.price_range_pattern(message):
             store_words["request"] = "price"
-        elif "phone" or "phone number" or "number" in message:
+        elif self.phone_pattern.match(message):
             store_words["request"] = "phone"
-        elif "website" or "web" or "url" in message:
+        elif self.phone_pattern.match(message):
             store_words["request"] = "website"
-        elif "city" or "town" or "city" in message:
+        elif self.city_pattern.match(message):
             store_words["request"] = "city"
-        elif "province" in message:
+        elif self.province_pattern.match(message):
             store_words["request"] = "province"
-        elif "postal" or "zip" in message:
+        elif self.postal_code_pattern.match(message):
             store_words["request"] = "postal_code"
-        elif "country" in message:
+        elif self.country_pattern.match(message):
             store_words["request"] = "country"
 
          # If the request is truly about store
