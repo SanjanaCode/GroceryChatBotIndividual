@@ -176,11 +176,11 @@ class StoreProductHandler:
             store_words["request"] = "address"
         elif self.opening_pattern.match(message):
             store_words["request"] = "opening_hours"
-        elif self.price_range_pattern(message):
+        elif self.price_range_pattern.match(message):
             store_words["request"] = "price"
         elif self.phone_pattern.match(message):
             store_words["request"] = "phone"
-        elif self.phone_pattern.match(message):
+        elif self.website_pattern.match(message):
             store_words["request"] = "website"
         elif self.city_pattern.match(message):
             store_words["request"] = "city"
