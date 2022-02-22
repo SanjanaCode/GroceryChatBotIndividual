@@ -158,6 +158,7 @@ class StoreProductHandler:
 
             if prod_name in message or prod_id in message or prod_names in message:
                 prod_words["product_name"] = prod["names"]
+                prod_words["id"] = prod["id"]
 
         return (is_prod, "product_info", prod_words)
 
@@ -202,25 +203,26 @@ class StoreProductHandler:
     def handle_product_info(self, message=None, **kwargs) -> str:
         # kwargs are arguments such as product_name, price, operators (<. >)
         # This really depends on how you define your parser
-        prod_price, prod_scale, prod_stock, reply = None
+        prod_id = kwargs["id"]
 
-        prod_name = kwargs.get("product_name")
-        for prod in MOCK_PRODUCT_DATA:
-            if prod["names"] == prod_name:
-                prod_price = prod["price"]
-                prod_scale = prod["price_scale"]
-                prod_stock = prod["in_stock"]
-                break
+        # Get the product information
+        products = self.get_product("id", prod_id)
+
+        # Since id is unique, we can assume there is only one product
+        product = products[0]
+
+        reply = None
 
         prod_msg_type = kwargs.get("requests")
         if prod_msg_type == "price":
             reply = "%s cost $%s %s." % (
-                prod_name.capitalize(), prod_price, prod_scale)
+                product['names'].capitalize(), product['price'], product['price_scale'])
         elif prod_msg_type == "stock":
-            if prod_stock == True:
-                reply = "%s are in stock." % (prod_name.capitalize())
+            if product['in_stock']:
+                reply = "%s are in stock." % (product['names'].capitalize())
             else:
-                reply = "%s are out of stock." % (prod_name.capitalize())
+                reply = "%s are out of stock." % (
+                    product['names'].capitalize())
 
         return reply
 
