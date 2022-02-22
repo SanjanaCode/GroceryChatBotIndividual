@@ -1,26 +1,7 @@
 import os
+from app.products.database import SQLiteDatabase, DatabaseType, MOCK_PRODUCT_DATA, STORE_INFO
+import re
 
-# @Quan @Paul @Thuan
-# TODO: Add mock data if needed
-mock_product_data = [
-    {"id": "4011", "name": "banana", "names": "bananas", "price": "0.67",
-     "price_scale": "per kg", "in_stock": True},
-    {"id": "3022", "name": "strawberry", "names": "strawberries", "price": "3.99",
-     "price_scale": "per box", "in_stock": True},
-]
-
-STORE_INFO = {
-    "name": "Walmart",
-    "address": "123 Main St",
-    "city": "Toronto",
-    "province": "ON",
-    "postal_code": "M5V 2K7",
-    "country": "Canada",
-    "phone": "416-555-1234",
-    "website": "https://www.walmart.ca",
-    "opening_hours": "Mon-Fri: 9am-5pm",
-    "price": "0.99 - 5.99 cad",
-}
 
 class StoreProductHandler:
     """
@@ -53,6 +34,46 @@ class StoreProductHandler:
             "store_info": self.handle_store_info
         }
 
+        # Create pattern matches
+        self.create_match_paterns()
+
+        # Initialize a mock database if development environment
+        if self.runtime_mode == "DEV":
+            self.db = SQLiteDatabase(DatabaseType.MEMORY)
+            self.db.connect()  # Start a connection
+            self.db.init_database()  # Initialize the database
+        else:
+            self.db = None
+
+    def create_match_paterns(self):
+        """
+        This method is called when the class is initialized.
+        """
+        # Product-related patterns
+        self.price_pattern = re.compile(
+            r"(price|cost|how much)", re.IGNORECASE)
+        self.stock_pattern = re.compile(r"(stock|how many)", re.IGNORECASE)
+
+        # Store-related patterns
+        self.location_pattern = re.compile(
+            r"(where|location|address|street)", re.IGNORECASE)
+        self.opening_pattern = re.compile(
+            r"(when|open|close|opening|closing|hours)", re.IGNORECASE)
+        self.phone_pattern = re.compile(r"(phone|number)", re.IGNORECASE)
+        self.price_range_pattern = re.compile(
+            r"(price range|range)", re.IGNORECASE)
+        self.website_pattern = re.compile(r"(website|url|web)", re.IGNORECASE)
+        self.city_pattern = re.compile(r"(city|town)", re.IGNORECASE)
+        self.province_pattern = re.compile(r"(province|state)", re.IGNORECASE)
+        self.country_pattern = re.compile(r"(country)", re.IGNORECASE)
+        self.postal_code_pattern = re.compile(r"(postal|zip)", re.IGNORECASE)
+
+    def dispose(self):
+        """
+        Call this methods to release any resources with this minibot (i.e. database connection).
+        """
+        self.db.close()
+
     def handle(self, message: str) -> str:
         """
         The entry point of the mini-bot. 
@@ -83,13 +104,15 @@ class StoreProductHandler:
         # If there is a topic detected, we find the response
         # By calling the handler with the message (for convenience) and its necessary arguments
         if handler:
-            response = handler(message, kargs)
+            response = handler(message, **kargs)
 
         return response
 
     def parse_query(self, message: str) -> tuple:
         """
         Method to parse the query and return the a tuple of (topic_name, arguments for handler).
+
+        This method runs the message via a pipeline of parsers and return the first topic that is detected.
 
         Parameters
         ----------
@@ -116,19 +139,27 @@ class StoreProductHandler:
     # TODO: Implement helper method to parse product information.
     # This method should return a tuple of (boolean, str, dict).
     # The first item indicates whether this request is about product information.
-    def parse_product_info(self, message) -> tuple:
+    def parse_product_info(self, message: str) -> tuple:
         is_prod = False
         prod_words = {"request": None, "product_name": None}
-        if "price" or "cost" or "how much" in message:
+
+        # Check for keywords for prices
+        if self.price_pattern.search(message):
             prod_words["request"] = "price"
-            is_prod = True
-        elif "stock" or "how many" in message:
+        elif self.stock_pattern.search(message):
             prod_words["request"] = "stock"
+
+        # If the request is truly about product
+        if prod_words['request']:
             is_prod = True
-        
-        for prod in mock_product_data:
-            if prod["id"] or prod["name"] or prod["names"] in message:
-                prod_words["product_name"] = prod["names"]
+
+        for prod in MOCK_PRODUCT_DATA:
+            prod_name = prod["name"]
+            prod_id = prod["id"]
+            prod_names = prod["names"]
+
+            if prod_name in message or prod_id in message or prod_names in message:
+                prod_words["id"] = prod["id"]
 
         return (is_prod, "product_info", prod_words)
 
@@ -140,26 +171,27 @@ class StoreProductHandler:
     def parse_store_info(self, message) -> tuple:
         is_store = False
         store_words = {"request": None}
-        
-        if "where" or "location" or "address" or "street" or "address" in message:
+
+        if self.location_pattern.search(message):
             store_words["request"] = "address"
-        elif "when" or "open" or "close" or "opening" or "closing" or "hours" in message:
+        elif self.opening_pattern.search(message):
             store_words["request"] = "opening_hours"
-        elif "price" or "price range" or "price range" in message:
+        elif self.price_range_pattern.search(message):
             store_words["request"] = "price"
-        elif "phone" or "phone number" or "number" in message:
+        elif self.phone_pattern.search(message):
             store_words["request"] = "phone"
-        elif "website" or "web" or "url" in message:
+        elif self.website_pattern.search(message):
             store_words["request"] = "website"
-        elif "city" or "town" or "city" in message:
+        elif self.city_pattern.search(message):
             store_words["request"] = "city"
-        elif "province" in message:
+        elif self.province_pattern.search(message):
             store_words["request"] = "province"
-        elif "postal" or "zip" in message:
+        elif self.postal_code_pattern.search(message):
             store_words["request"] = "postal_code"
-        elif "country" in message:
+        elif self.country_pattern.search(message):
             store_words["request"] = "country"
 
+         # If the request is truly about store
         if store_words["request"] is not None:
             is_store = True
 
@@ -172,25 +204,27 @@ class StoreProductHandler:
     def handle_product_info(self, message=None, **kwargs) -> str:
         # kwargs are arguments such as product_name, price, operators (<. >)
         # This really depends on how you define your parser
-        prod_price, prod_scale, prod_stock, reply = None
+        prod_id = kwargs["id"]
 
-        prod_name = kwargs.get("product_name")
-        for prod in mock_product_data:
-            if prod["names"] == prod_name:
-                prod_price = prod["price"]
-                prod_scale = prod["price_scale"]
-                prod_stock = prod["in_stock"]
-                break
-        
+        # Get the product information
+        products = self.get_product("id", prod_id)
+
+        # Since id is unique, we can assume there is only one product
+        product = products[0]
+
+        reply = None
+
         prod_msg_type = kwargs.get("requests")
         if prod_msg_type == "price":
-            reply = "%s cost $%s %s." % (prod_name.capitalize(), prod_price, prod_scale)
+            reply = "%s cost $%s %s." % (
+                product['names'].capitalize(), product['price'], product['price_scale'])
         elif prod_msg_type == "stock":
-            if prod_stock == True:
-                reply = "%s are in stock." % (prod_name.capitalize())
+            if product['in_stock']:
+                reply = "%s are in stock." % (product['names'].capitalize())
             else:
-                reply = "%s are out of stock." % (prod_name.capitalize())
-        
+                reply = "%s are out of stock." % (
+                    product['names'].capitalize())
+
         return reply
 
     # @Quan @Paul
@@ -231,15 +265,23 @@ class StoreProductHandler:
         # Define a list
         products = []
 
-        # If in development environment
-        if self.runtime_mode == "DEV":
-            # Loop to search
-            for mock_product in mock_product_data:
-                if mock_product[attr] == value:
-                    products.append(mock_product)
+        # Create a query statement
+        query = f"SELECT * FROM product WHERE {attr} = '{value}'"
 
-            return products
-        else:
-            # @Thuan
-            # TODO: Implement database connection to retrieve necessary data
-            return products
+        # Execute the query
+        cursor = self.db.execute_query(query)
+
+        for row in cursor:
+            # Create a dictionary representing a product
+            product = dict()
+            product["id"] = row[0]
+            product["name"] = row[1]
+            product["names"] = row[2]
+            product["price"] = row[3]
+            product["price_scale"] = row[4]
+            product["in_stock"] = True if row[5] > 0 else False
+
+            # Add to the list
+            products.append(product)
+
+        return products
