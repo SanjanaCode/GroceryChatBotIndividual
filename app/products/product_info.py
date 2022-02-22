@@ -144,9 +144,9 @@ class StoreProductHandler:
         prod_words = {"request": None, "product_name": None}
 
         # Check for keywords for prices
-        if self.price_pattern.match(message):
+        if self.price_pattern.search(message):
             prod_words["request"] = "price"
-        elif self.stock_pattern.match(message):
+        elif self.stock_pattern.search(message):
             prod_words["request"] = "stock"
 
         # If the request is truly about product
@@ -172,23 +172,23 @@ class StoreProductHandler:
         is_store = False
         store_words = {"request": None}
 
-        if self.location_pattern.match(message):
+        if self.location_pattern.search(message):
             store_words["request"] = "address"
-        elif self.opening_pattern.match(message):
+        elif self.opening_pattern.search(message):
             store_words["request"] = "opening_hours"
-        elif self.price_range_pattern.match(message):
+        elif self.price_range_pattern.search(message):
             store_words["request"] = "price"
-        elif self.phone_pattern.match(message):
+        elif self.phone_pattern.search(message):
             store_words["request"] = "phone"
-        elif self.website_pattern.match(message):
+        elif self.website_pattern.search(message):
             store_words["request"] = "website"
-        elif self.city_pattern.match(message):
+        elif self.city_pattern.search(message):
             store_words["request"] = "city"
-        elif self.province_pattern.match(message):
+        elif self.province_pattern.search(message):
             store_words["request"] = "province"
-        elif self.postal_code_pattern.match(message):
+        elif self.postal_code_pattern.search(message):
             store_words["request"] = "postal_code"
-        elif self.country_pattern.match(message):
+        elif self.country_pattern.search(message):
             store_words["request"] = "country"
 
          # If the request is truly about store
