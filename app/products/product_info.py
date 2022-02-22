@@ -262,15 +262,23 @@ class StoreProductHandler:
         # Define a list
         products = []
 
-        # If in development environment
-        if self.runtime_mode == "DEV":
-            # Loop to search
-            for mock_product in MOCK_PRODUCT_DATA:
-                if mock_product[attr] == value:
-                    products.append(mock_product)
+        # Create a query statement
+        query = f"SELECT * FROM product WHERE {attr} = '{value}'"
 
-            return products
-        else:
-            # @Thuan
-            # TODO: Implement database connection to retrieve necessary data
-            return products
+        # Execute the query
+        cursor = self.db.execute_query(query)
+
+        for row in cursor:
+            # Create a dictionary representing a product
+            product = dict()
+            product["id"] = row[0]
+            product["name"] = row[1]
+            product["names"] = row[2]
+            product["price"] = row[3]
+            product["price_scale"] = row[4]
+            product["in_stock"] = True if row[5] > 0 else False
+
+            # Add to the list
+            products.append(product)
+
+        return products
