@@ -34,11 +34,18 @@ class StoreProductHandler:
             "store_info": self.handle_store_info
         }
 
+        # Regex patterns
+        self.price_pattern = re.compile(
+            r"(price|cost|how much)", re.IGNORECASE)
+        self.stock_pattern = re.compile(r"(stock|how many)", re.IGNORECASE)
+
         # Initialize a mock database if development environment
         if self.runtime_mode == "DEV":
             self.db = SQLiteDatabase(DatabaseType.MEMORY)
             self.db.connect()  # Start a connection
             self.db.init_database()  # Initialize the database
+        else:
+            self.db = None
 
     def dispose(self):
         """
@@ -84,6 +91,8 @@ class StoreProductHandler:
         """
         Method to parse the query and return the a tuple of (topic_name, arguments for handler).
 
+        This method runs the message via a pipeline of parsers and return the first topic that is detected.
+
         Parameters
         ----------
 
@@ -109,18 +118,26 @@ class StoreProductHandler:
     # TODO: Implement helper method to parse product information.
     # This method should return a tuple of (boolean, str, dict).
     # The first item indicates whether this request is about product information.
-    def parse_product_info(self, message) -> tuple:
+    def parse_product_info(self, message: str) -> tuple:
         is_prod = False
         prod_words = {"request": None, "product_name": None}
-        if "price" or "cost" or "how much" in message:
+
+        # Check for keywords for prices
+        if self.price_pattern.match(message):
             prod_words["request"] = "price"
-            is_prod = True
-        elif "stock" or "how many" in message:
+        elif self.stock_pattern.match(message):
             prod_words["request"] = "stock"
+
+        # If the request is truly about product
+        if prod_words['request']:
             is_prod = True
 
-        for prod in mock_product_data:
-            if prod["id"] or prod["name"] or prod["names"] in message:
+        for prod in MOCK_PRODUCT_DATA:
+            prod_name = prod["name"]
+            prod_id = prod["id"]
+            prod_names = prod["names"]
+
+            if prod_name in message or prod_id in message or prod_names in message:
                 prod_words["product_name"] = prod["names"]
 
         return (is_prod, "product_info", prod_words)
@@ -153,6 +170,7 @@ class StoreProductHandler:
         elif "country" in message:
             store_words["request"] = "country"
 
+         # If the request is truly about store
         if store_words["request"] is not None:
             is_store = True
 
@@ -168,7 +186,7 @@ class StoreProductHandler:
         prod_price, prod_scale, prod_stock, reply = None
 
         prod_name = kwargs.get("product_name")
-        for prod in mock_product_data:
+        for prod in MOCK_PRODUCT_DATA:
             if prod["names"] == prod_name:
                 prod_price = prod["price"]
                 prod_scale = prod["price_scale"]
@@ -228,7 +246,7 @@ class StoreProductHandler:
         # If in development environment
         if self.runtime_mode == "DEV":
             # Loop to search
-            for mock_product in mock_product_data:
+            for mock_product in MOCK_PRODUCT_DATA:
                 if mock_product[attr] == value:
                     products.append(mock_product)
 
