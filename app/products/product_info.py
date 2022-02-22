@@ -104,7 +104,7 @@ class StoreProductHandler:
         # If there is a topic detected, we find the response
         # By calling the handler with the message (for convenience) and its necessary arguments
         if handler:
-            response = handler(message, kargs)
+            response = handler(message, **kargs)
 
         return response
 
