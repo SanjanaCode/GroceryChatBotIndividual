@@ -3,12 +3,27 @@ import sqlite3
 import os
 from enum import Enum, unique
 
-mock_product_data = [
+# Add data as needed
+MOCK_PRODUCT_DATA = [
     {"id": "4011", "name": "banana", "names": "bananas", "price": "0.67",
      "price_scale": "per kg", "in_stock": True},
     {"id": "3022", "name": "strawberry", "names": "strawberries", "price": "3.99",
      "price_scale": "per box", "in_stock": True},
 ]
+
+
+STORE_INFO = {
+    "name": "Walmart",
+    "address": "123 Main St",
+    "city": "Toronto",
+    "province": "ON",
+    "postal_code": "M5V 2K7",
+    "country": "Canada",
+    "phone": "416-555-1234",
+    "website": "https://www.walmart.ca",
+    "opening_hours": "Mon-Fri: 9am-5pm",
+    "price": "0.99 - 5.99 cad",
+}
 
 
 @unique
@@ -43,7 +58,7 @@ class SQLiteDatabase:
 
         # Insert sample product information
 
-        for prod in mock_product_data:
+        for prod in MOCK_PRODUCT_DATA:
             insert_sql = f"""
             INSERT INTO product VALUES ("{prod['id']}", "{prod['name']}", "{prod['names']}", {prod['price']}, "{prod['price_scale']}", {prod['in_stock']});
             """

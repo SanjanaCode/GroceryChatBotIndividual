@@ -1,26 +1,6 @@
 import os
-from app.products.database import SQLiteDatabase, DatabaseType
-# @Quan @Paul @Thuan
-# TODO: Add mock data if needed
-mock_product_data = [
-    {"id": "4011", "name": "banana", "names": "bananas", "price": "0.67",
-     "price_scale": "per kg", "in_stock": True},
-    {"id": "3022", "name": "strawberry", "names": "strawberries", "price": "3.99",
-     "price_scale": "per box", "in_stock": True},
-]
-
-STORE_INFO = {
-    "name": "Walmart",
-    "address": "123 Main St",
-    "city": "Toronto",
-    "province": "ON",
-    "postal_code": "M5V 2K7",
-    "country": "Canada",
-    "phone": "416-555-1234",
-    "website": "https://www.walmart.ca",
-    "opening_hours": "Mon-Fri: 9am-5pm",
-    "price": "0.99 - 5.99 cad",
-}
+from app.products.database import SQLiteDatabase, DatabaseType, MOCK_PRODUCT_DATA, STORE_INFO
+import re
 
 
 class StoreProductHandler:
