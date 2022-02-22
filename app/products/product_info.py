@@ -34,6 +34,21 @@ class StoreProductHandler:
             "store_info": self.handle_store_info
         }
 
+        # Create pattern matches
+        self.create_match_paterns()
+
+        # Initialize a mock database if development environment
+        if self.runtime_mode == "DEV":
+            self.db = SQLiteDatabase(DatabaseType.MEMORY)
+            self.db.connect()  # Start a connection
+            self.db.init_database()  # Initialize the database
+        else:
+            self.db = None
+
+    def create_match_paterns(self):
+        """
+        This method is called when the class is initialized.
+        """
         # Regex patterns
         self.price_pattern = re.compile(
             r"(price|cost|how much)", re.IGNORECASE)
@@ -50,14 +65,6 @@ class StoreProductHandler:
         self.province_pattern = re.compile(r"(province|state)", re.IGNORECASE)
         self.country_pattern = re.compile(r"(country)", re.IGNORECASE)
         self.postal_code_pattern = re.compile(r"(postal|zip)", re.IGNORECASE)
-
-        # Initialize a mock database if development environment
-        if self.runtime_mode == "DEV":
-            self.db = SQLiteDatabase(DatabaseType.MEMORY)
-            self.db.connect()  # Start a connection
-            self.db.init_database()  # Initialize the database
-        else:
-            self.db = None
 
     def dispose(self):
         """
