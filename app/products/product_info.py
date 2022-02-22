@@ -49,10 +49,12 @@ class StoreProductHandler:
         """
         This method is called when the class is initialized.
         """
-        # Regex patterns
+        # Product-related patterns
         self.price_pattern = re.compile(
             r"(price|cost|how much)", re.IGNORECASE)
         self.stock_pattern = re.compile(r"(stock|how many)", re.IGNORECASE)
+
+        # Store-related patterns
         self.location_pattern = re.compile(
             r"(where|location|address|street)", re.IGNORECASE)
         self.opening_pattern = re.compile(
