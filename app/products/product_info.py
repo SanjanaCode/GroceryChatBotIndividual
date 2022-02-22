@@ -159,7 +159,6 @@ class StoreProductHandler:
             prod_names = prod["names"]
 
             if prod_name in message or prod_id in message or prod_names in message:
-                prod_words["product_name"] = prod["names"]
                 prod_words["id"] = prod["id"]
 
         return (is_prod, "product_info", prod_words)
