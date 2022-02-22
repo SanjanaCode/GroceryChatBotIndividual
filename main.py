@@ -36,4 +36,4 @@ def detect_intent_texts(text, project_id = "grocery-chat-bot", session_id = "tes
 
 if __name__ == '__main__':
   # main()
-  detect_intent_texts("Hello")
+  detect_intent_texts("When can I come?")
