@@ -2,7 +2,7 @@ from app.bot import Bot
 
 def main():
     bot = Bot()
-    bot.detect_intent_texts("What is the cost of lemon?")
+    bot.route_to_handler("product-info","what is apples?")
 
 
 if __name__ == '__main__':

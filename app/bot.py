@@ -1,4 +1,6 @@
 from google.cloud import dialogflow
+from app.products.product_info import ProductInfo
+from app.products.product_info import StoreInfo
 class Bot:
 
     # def __init__(self):
@@ -54,6 +56,8 @@ class Bot:
       response = session_client.detect_intent(
           request={"session": session, "query_input": query_input}
       )
+      
+      #route_to_handler(response.query_result.intent.display_name,text)
 
       print("=" * 20)
       print("Query text: {}".format(response.query_result.query_text))
@@ -64,3 +68,19 @@ class Bot:
           )
       )
       print("Fulfillment text: {}\n".format(response.query_result.fulfillment_text))
+
+    def route_to_handler(self, intentDetected ,userText):
+        #If the question is about (detected intent) product info, direct it to the product information handler.  
+        if(intentDetected == "product-info"):
+            if(not self.intents["product-info"]):
+                prodObj = ProductInfo()
+                self.intents["product-info"]=prodObj
+            prodObj.prodHandler(userText)
+        else:
+            if(not self.intents["store-info"]):
+                storeObj = StoreInfo()
+                self.intents["store-info"]=storeObj
+            storeObj.storeHandler(userText)
+
+
+    
