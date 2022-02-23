@@ -2,40 +2,45 @@ import pytest
 from app.products.database import MOCK_PRODUCT_DATA, SQLiteDatabase, DatabaseType
 
 
+@pytest.mark.database
 class TestSQLiteDatabase:
 
-    # Test select all with databse in memory
-    def test_get_all_products_memory(self):
+    # This will run for all tests defined in this module
+    @pytest.fixture(autouse=True)
+    def db(self):
+        # Set up
         db = SQLiteDatabase(DatabaseType.MEMORY)
         db.connect()
         db.init_database()
+
+        # Pass the database entry point to tests
+        # Test runs here
+        yield db
+
+        # Teadown
+        # Close the connection
+        db.close()
+
+    # Test select all with databse in memory
+    def test_get_all_products_memory(self, db: SQLiteDatabase):
         # Get the cursor
         cursor = db.execute_query("SELECT * FROM product;")
 
         # Parse the result set to str
         result_str = self.query_result_to_str(cursor)
         expected_str = self.all_data_to_str()
-
-        # Close the connection
-        db.close()
 
         # Checking
         assert result_str == expected_str
 
     # Test select all with database as a data file
-    def test_get_all_products_datafile(self):
-        db = SQLiteDatabase(DatabaseType.MEMORY)
-        db.connect()
-        db.init_database()
+    def test_get_all_products_datafile(self, db: SQLiteDatabase):
         # Get the cursor
         cursor = db.execute_query("SELECT * FROM product;")
 
         # Parse the result set to str
         result_str = self.query_result_to_str(cursor)
         expected_str = self.all_data_to_str()
-
-        # Close the connection
-        db.close()
 
         # Checking
         assert result_str == expected_str
