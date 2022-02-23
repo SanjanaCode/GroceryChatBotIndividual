@@ -69,17 +69,21 @@ class Bot:
       )
       print("Fulfillment text: {}\n".format(response.query_result.fulfillment_text))
 
+    #Based on intent, route to appropriate handler
     def route_to_handler(self, intentDetected ,userText):
         #If the question is about (detected intent) product info, direct it to the product information handler.  
         if(intentDetected == "product-info"):
+            #if object for product info is not already in the intents map, create a new object. Else invoke handler using existing object.
             if(not self.intents["product-info"]):
                 prodObj = ProductInfo()
                 self.intents["product-info"]=prodObj
             prodObj.prodHandler(userText)
-        else:
-            if(not self.intents["store-info"]):
-                storeObj = StoreInfo()
-                self.intents["store-info"]=storeObj
+        #If the question is about (detected intent) store info, direct it to the store information handler. 
+        else: 
+            #if object for store info is not already in the intents map, create a new object. Else invoke handler using existing object.   
+            if(not self.intents["store-info"]):     
+                storeObj = StoreInfo()      
+                self.intents["store-info"]=storeObj    
             storeObj.storeHandler(userText)
 
 
