@@ -25,7 +25,7 @@ class TestProductInfo:
     def test_handler_stockberry(self):
         classTest = StoreProductHandler()
         message = "Are strawberries in stock?"
-        expectedOutput = "{} are in stock.".format(MOCK_PRODUCT_DATA[0]["names"].capitalize())
+        expectedOutput = "{} are in stock.".format(MOCK_PRODUCT_DATA[1]["names"].capitalize())
         assert(classTest.handle(message) == expectedOutput)
 
     

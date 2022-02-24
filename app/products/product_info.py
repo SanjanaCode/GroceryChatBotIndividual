@@ -210,7 +210,7 @@ class StoreProductHandler:
 
         reply = None
 
-        prod_msg_type = kwargs.get("requests")
+        prod_msg_type = kwargs.get("request")
         if prod_msg_type == "price":
             reply = "%s cost $%s %s." % (
                 product['names'].capitalize(), product['price'], product['price_scale'])
