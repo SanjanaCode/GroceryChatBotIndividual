@@ -33,6 +33,17 @@ class ConvertUtilities:
 
         return "\n".join(all_data)
 
+    # Utility method to convert a single record (dict) into string
+    @staticmethod
+    def record_to_str(record: dict):
+        result = []
+        for _, v in record.items():
+            result.append(str(v))
+
+        result[-1] = "1" if result[-1] else "0"
+
+        return ",".join(result)
+
 
 @pytest.mark.database
 class TestSQLiteDatabase:
@@ -76,3 +87,35 @@ class TestSQLiteDatabase:
 
         # Checking
         assert result_str == expected_str
+
+
+@pytest.mark.database
+class TestSQLiteOnHandler:
+
+    @pytest.fixture()
+    def mini_bot(self):
+        # Set up
+        mini_bot = StoreProductHandler()
+
+        # Run tests
+        yield mini_bot
+
+        # Clean up
+        mini_bot.dispose()
+
+    # Test get_product method on StoreProductHandler
+
+    def test_get_product(self, mini_bot: StoreProductHandler):
+        # Make a sample request for record with id 4011
+        list_prod = mini_bot.get_product("id", "4011")
+
+        # Get the data from MOCK_PRODUCT_DATA
+        expect_prod = None
+        for item in MOCK_PRODUCT_DATA:
+            if item["id"] == "4011":
+                expect_prod = item
+                break
+
+        # Check on id so there is either none or 1 product in list
+        assert (len(list_prod) == 0 and expect_prod is None) or (
+            ConvertUtilities.record_to_str(list_prod[0]) == ConvertUtilities.record_to_str(expect_prod))
