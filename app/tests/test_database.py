@@ -38,7 +38,7 @@ class ConvertUtilities:
 class TestSQLiteDatabase:
 
     # This will run for all tests defined in this module
-    @pytest.fixture(autouse=True)
+    @pytest.fixture()
     def db(self):
         # Set up
         db = SQLiteDatabase(DatabaseType.MEMORY)
