@@ -1,6 +1,7 @@
 from google.cloud import dialogflow
 from app.products.product_info import ProductInfo
 from app.products.product_info import StoreInfo
+from app.concerns.further_concern import OtherConcerns
 class Bot:
 
     # def __init__(self):
@@ -73,18 +74,29 @@ class Bot:
     def route_to_handler(self, intentDetected ,userText):
         #If the question is about (detected intent) product info, direct it to the product information handler.  
         if(intentDetected == "product-info"):
-            #if object for product info is not already in the intents map, create a new object. Else invoke handler using existing object.
+            #if object for product-info is not already in the intents map, create a new object. Else invoke handler using existing object.
             if(not self.intents["product-info"]):
                 prodObj = ProductInfo()
                 self.intents["product-info"]=prodObj
             prodObj.prodHandler(userText)
+
         #If the question is about (detected intent) store info, direct it to the store information handler. 
-        else: 
-            #if object for store info is not already in the intents map, create a new object. Else invoke handler using existing object.   
+        elif(intentDetected == "store-info"):
+            #if object for store-info is not already in the intents map, create a new object. Else invoke handler using existing object.   
             if(not self.intents["store-info"]):     
                 storeObj = StoreInfo()      
                 self.intents["store-info"]=storeObj    
             storeObj.storeHandler(userText)
+
+        #If intent cannot be detected, direct it to the other concerns handler   
+        else:
+            #if object for other-concerns is not already in the intents map, create a new object. Else invoke handler using existing object. 
+            if(not self.intents["other-concerns"]):     
+                concernsObj = OtherConcerns()      
+                self.intents["other-concerns"]=concernsObj 
+            storeObj.concernsHandler(userText)
+
+
 
 
     
