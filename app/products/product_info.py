@@ -1,6 +1,8 @@
 import os
+from typing import OrderedDict
 from app.products.database import SQLiteDatabase, DatabaseType, MOCK_PRODUCT_DATA, STORE_INFO
 import re
+from collections import OrderedDict
 
 
 class StoreProductHandler:
@@ -269,13 +271,16 @@ class StoreProductHandler:
 
         for row in cursor:
             # Create a dictionary representing a product
-            product = dict()
-            product["id"] = row[0]
-            product["name"] = row[1]
-            product["names"] = row[2]
-            product["price"] = row[3]
-            product["price_scale"] = row[4]
-            product["in_stock"] = True if row[5] > 0 else False
+            product = OrderedDict(
+                {
+                    "id": row[0],
+                    "name": row[1],
+                    "names": row[2],
+                    "price": row[3],
+                    "price_scale": row[4],
+                    "in_stock": True if row[5] > 0 else False
+                }
+            )
 
             # Add to the list
             products.append(product)
