@@ -2,13 +2,14 @@
 import sqlite3
 import os
 from enum import Enum, unique
+from collections import OrderedDict
 
 # Add data as needed
 MOCK_PRODUCT_DATA = [
-    {"id": "4011", "name": "banana", "names": "bananas", "price": "0.67",
-     "price_scale": "per kg", "in_stock": True},
-    {"id": "3022", "name": "strawberry", "names": "strawberries", "price": "3.99",
-     "price_scale": "per box", "in_stock": True},
+    OrderedDict({"id": "4011", "name": "banana", "names": "bananas", "price": "0.67",
+                 "price_scale": "per kg", "in_stock": True}),
+    OrderedDict({"id": "3022", "name": "strawberry", "names": "strawberries", "price": "3.99",
+                 "price_scale": "per box", "in_stock": True}),
 ]
 
 
