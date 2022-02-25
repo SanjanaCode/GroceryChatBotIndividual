@@ -13,5 +13,6 @@ We use Dialogflow agent to detect user's intent and respond accordingly. With th
 
 Currently, to use the bot, you need to contact us to get the API credentials. After having the credentials, you can use the bot by following the steps:
 
-1. Set enviroment variables `GOOGLE_APPLICATION_CREDENTIALS` to the path of the API key in your device
-2. Run the bot using the command `python main.py`
+1. Install package `pip install google-cloud-dialogflow`
+2. Set enviroment variables `GOOGLE_APPLICATION_CREDENTIALS` to the path of the API key in your device
+3. Run the bot using the command `python main.py`
