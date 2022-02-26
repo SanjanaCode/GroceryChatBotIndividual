@@ -9,7 +9,7 @@ class TestStoreInfo:
     def classTest(self):
         StoreProdHandler = StoreProductHandler()
         yield StoreProdHandler
-        StoreProdHandler.dipose()
+        StoreProdHandler.dispose()
 
     
     def test_handler_address(self, classTest):
