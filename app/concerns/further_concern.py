@@ -1,5 +1,5 @@
 class OtherConcerns:
-    #method:return response for other concerns
+    #method:return response for concerns other than store info and product info
     def concernsHandler(self):
         #Ask user if they would want to visit store
         print("Would you like to visit our store to resolve your concerns?")
