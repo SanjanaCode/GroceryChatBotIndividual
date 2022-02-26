@@ -36,6 +36,7 @@ class Bot:
             # if user ends the converastion (such as "bye"), 
             # then close the conversation
             elif(intent == "Done-conversation"):
+                print("Such a great pleasure to help you. Have a great day!")
                 break
             # if user asks about store, product, 
             # pass to product-info, store-info in route_to_handle. 
