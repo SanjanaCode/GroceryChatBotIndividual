@@ -1,3 +1,4 @@
+#Temporary classes for testing purposes
 class ProductInfo:
     def prodHandler(self,text):
         print(text," handled by product info team")

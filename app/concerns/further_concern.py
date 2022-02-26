@@ -1,6 +1,6 @@
 class OtherConcerns:
     #method:return response for other concerns
-    def concernsHandler(self):
+    def concernsHandler(self, userText):
         #Ask user if they would want to visit store
         print("Would you like to visit our store to resolve your concerns?")
         userInput = input().lower() 
