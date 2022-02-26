@@ -60,7 +60,7 @@ class Bot:
                     print(response.fulfillment_text)
                     continue
             # continue the conversation
-            print("What else can I help you?")     
+            print("What else can I help you?")   
     
     def detect_intent_texts(self,text):
         # Process text_input
