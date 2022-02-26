@@ -13,8 +13,12 @@ class OtherConcerns:
             print("Would you like us to contact you by phone?")
             userInput = input().lower() 
             if(userInput=='yes'):
-                print("Please give us your phone number and a brief desciption of your concerns. Our customer service agent will get back to you within 24 hours")
-                userInput = input().lower()
-            #TO DO: parse userInput to obtain phone number and description of concern. Then,store in database.
+                print("Please give us your phone number for our agent to contact you:")
+                phoneNum = input()
+                #TO DO: Store phone number in database.
+                print("Please give us a brief description of your concern:")
+                descConcern = input()
+                 #TO DO: Store customer concern in database.
+                print("Our customer service agent will address your issue within 24 hours.")
             else:
-                print("Here is our cutomer service number:416-555-1234\n You can also contact this number and our customer service agents will assist you.")
+                print("Here is our cutomer service number:416-555-1234\n You can contact this number and our customer service agents will assist you.")
