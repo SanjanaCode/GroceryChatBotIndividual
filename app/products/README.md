@@ -4,7 +4,7 @@ This mini-bot will handle any question related to product price, stock, and stor
 ### Class StoreProductHandler
 A class used to reperesent a mini-bot to handle product queries.
 ```console
-className = StoreProductHandler(runtime_mode)
+className = StoreProductHandler()
 ```
 ###### Attributes:
 runtime_mode: str
@@ -23,7 +23,7 @@ None
 #### `handle`
 The entry point of the mini-bot. Main bot will call this method to pass in the message to process.
 ```console
-response = StoreProductHandler(runtime_mode).handle(message)
+response = StoreProductHandler().handle(message)
 ```
 ###### Parameters
 message: str
@@ -31,10 +31,10 @@ The message that the user sends to the bot.
 ###### Returns
 response: str
 The response string to the request message.
-#### parse_query
+#### `parse_query`
 Method to parse the query and return a tuple of (topic_name, arguments for handler).
 ```console
-name, kwargs = StoreProductHandler(runtime_mode).parse_query(message)
+name, kwargs = StoreProductHandler().parse_query(message)
 ```
 ###### Parameters
 message: str
@@ -45,7 +45,7 @@ The tuple consisting of the topic name and keyword arguments for handler.
 #### `parse_product_info`
 Indicates whether the request is related to product information, and then breaks down the message into its keywords.
 ```console
-matched, name, prod_words = StoreProductHandler(runtime_mode).parse_product_info(message)
+matched, name, prod_words = StoreProductHandler().parse_product_info(message)
 ```
 ###### Parameters
 message: str
@@ -56,7 +56,7 @@ The tuple consisting of whether the request relates to product info or not, the 
 #### `parse_store_info`
 Indicates whether the request is related to store information, and then breaks down the message into its keywords.
 ```console
-matched, name, store_words = StoreProductHandler(runtime_mode).parse_store_info(message)
+matched, name, store_words = StoreProductHandler().parse_store_info(message)
 ```
 ###### Parameters
 message: str
@@ -67,7 +67,7 @@ The tuple consisting of whether the request relates to store info or not, the to
 #### `handle_product_info`
 Uses the identified keywords to create the appropriate product response message for the user query.
 ```console
-reply = StoreProductHandler(runtime_mode).handle_product_info(message=None, **kwargs)
+reply = StoreProductHandler().handle_product_info(message=None, **kwargs)
 ```
 ###### Parameters
 message: str (optional)
@@ -80,7 +80,7 @@ The proper response for the product information request.
 #### `handle_store_info`
 Uses the identified keywords to create the appropriate store response message for the user query.
 ```console
-reply = StoreProductHandler(runtime_mode).handle_store_info(message=None, **kwargs)
+reply = StoreProductHandler().handle_store_info(message=None, **kwargs)
 ```
 ###### Parameters
 message: str (optional)
