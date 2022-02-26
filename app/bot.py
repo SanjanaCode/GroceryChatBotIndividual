@@ -22,11 +22,11 @@ class Bot:
 
     def start_conversation(self):
         print("Hello, how can I help you?")
-        #continuously take in user input (or maintain the conversation) 
-        #until the user ends
+        #continuously take in user input 
+        #(or maintain the conversation) until the user ends
         while True:
             user_input = input()
-            #call dialogflow API to detect intent
+            #detect intent
             response = self.detect_intent_texts(user_input)
             intent = response.intent.display_name            
             # if user greets (such as "hello"), then greet the user
@@ -34,7 +34,7 @@ class Bot:
                 print(response.fulfillment_text)
                 continue
             # if user ends the converastion (such as "bye"), 
-            # then close the conversation
+            # then end the conversation
             elif(intent == "Done-conversation"):
                 break
             # if user asks about store, product, 
