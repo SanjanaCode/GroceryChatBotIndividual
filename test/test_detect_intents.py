@@ -14,7 +14,4 @@ class TestIntentRouting:
         assert self.bot.detect_intent_texts("When do you open ?") == "store-info", "store-time-info failed"
         assert self.bot.detect_intent_texts("I want to return my order") == "refund-request", "refund-request failed"
         assert self.bot.detect_intent_texts("") == "Default Fallback Intent", "Empty string failed"
-
-    def test_route_to_handler(self):
-        assert self.bot.route_to_handler()
     
