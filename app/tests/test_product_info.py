@@ -7,7 +7,8 @@ class TestProductInfo:
     @pytest.fixture
     def classTest(self):
         storeProdHandler = StoreProductHandler()
-        return storeProdHandler
+        yield storeProdHandler
+        storeProdHandler.dispose()
 
     def test_handler_pricebanana(self, classTest):
         message = "What is the price of a banana?"
