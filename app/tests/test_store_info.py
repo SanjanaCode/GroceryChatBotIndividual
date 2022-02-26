@@ -7,7 +7,10 @@ class TestStoreInfo:
 
     @pytest.fixture
     def classTest(self):
-        return StoreProductHandler()
+        StoreProdHandler = StoreProductHandler()
+        yield StoreProdHandler
+        StoreProdHandler.dipose()
+
     
     def test_handler_address(self, classTest):
         message = "Where is the store?"
