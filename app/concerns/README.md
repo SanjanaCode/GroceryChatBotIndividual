@@ -2,7 +2,7 @@
 
 ## Implementation
 
-The further concerns class has one principal method: concernsHandler() which deals with questions that are not about store or product information. For example, the concernsHandler deals with questions about returns and refunds.
+The further concerns class has one principal method: `concernsHandler()` which deals with questions that are not about store or product information. For example, the concernsHandler deals with questions about returns and refunds.
 To deal with other concerns of the user, the chatbot provides 3 options:
 
 1. First the chatbot asks if the user would like to visit the store. If user responds yes, the bot provides the store address.
