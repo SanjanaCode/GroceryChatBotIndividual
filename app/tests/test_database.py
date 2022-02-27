@@ -109,7 +109,7 @@ class TestSQLiteOnHandler:
     # Test get_product method on ProductInfoHandler
     def test_get_product(self, mini_bot: ProductInfoHandler):
         # Make a sample request for record with id 4011
-        list_prod = mini_bot.get_product("id", "4011")
+        list_prod = mini_bot.db.get_product("id", "4011")
 
         # Extract product
         return_prod = list_prod[0] if len(list_prod) > 0 else None
