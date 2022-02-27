@@ -1,5 +1,5 @@
 import pytest
-from app.products.product_info import StoreProductHandler
+from app.products.store_info import StoreInfoHandler
 from app.products.database import STORE_INFO
 
 @pytest.mark.store_info
@@ -7,7 +7,7 @@ class TestStoreInfo:
 
     @pytest.fixture
     def classTest(self):
-        StoreProdHandler = StoreProductHandler()
+        StoreProdHandler = StoreInfoHandler()
         yield StoreProdHandler
         StoreProdHandler.dispose()
 

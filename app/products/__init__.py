@@ -1,3 +1,6 @@
 from .product_info import (
-    StoreProductHandler
+    ProductInfoHandler,
+)
+from .store_info import (
+    StoreInfoHandler,
 )

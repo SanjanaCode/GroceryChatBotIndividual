@@ -1,12 +1,12 @@
 import pytest
-from app.products.product_info import StoreProductHandler
+from app.products.product_info import ProductInfoHandler
 from app.products.database import MOCK_PRODUCT_DATA
 @pytest.mark.prod_info
 
 class TestProductInfo:
     @pytest.fixture
     def classTest(self):
-        storeProdHandler = StoreProductHandler()
+        storeProdHandler = ProductInfoHandler()
         yield storeProdHandler
         storeProdHandler.dispose()
 

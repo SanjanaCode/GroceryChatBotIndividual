@@ -103,6 +103,59 @@ class SQLiteDatabase:
         """
         self.conn.execute(update_query)
 
+    # @Thuan @Paul @Quan
+    # TODO: Once database is improved for use, we can have a more flexible way to retrieve data.
+    # For now, only 1 attribute can be matched at a time.
+    def get_product(self, attr: str, value=None) -> list:
+        """
+        Method to get the first product that has a matching attribute value.
+
+        This is equivalent to SELECT * WHERE attr = value.
+
+        Parameters
+        ----------
+
+        attr: str
+            The attribute name.
+
+        value: any
+            The value to match for specified attribute.
+
+
+        Returns
+        ----------
+
+        product: dict
+            The information about the product.
+        """
+
+        # Define a list
+        products = []
+
+        # Create a query statement
+        query = f"SELECT * FROM product WHERE {attr} = '{value}'"
+
+        # Execute the query
+        cursor = self.execute_query(query)
+
+        for row in cursor:
+            # Create a dictionary representing a product
+            product = OrderedDict(
+                {
+                    "id": row[0],
+                    "name": row[1],
+                    "names": row[2],
+                    "price": row[3],
+                    "price_scale": row[4],
+                    "in_stock": True if row[5] > 0 else False
+                }
+            )
+
+            # Add to the list
+            products.append(product)
+
+        return products
+
 
 def main():
     db = SQLiteDatabase(DatabaseType.MEMORY)
