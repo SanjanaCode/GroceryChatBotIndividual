@@ -17,8 +17,6 @@ class Bot:
         self.intents = {}
         #keep track of times the intent is not detected
         self.undetected_intent_count = 0
-        #initiate conversation with customer
-        self.start_conversation()
 
     def start_conversation(self):
         print("Bot: Hello, how can I help you?")
@@ -34,7 +32,7 @@ class Bot:
                 print("Bot: " + response.fulfillment_text)
                 continue
             # if user ends the converastion (such as "bye"), 
-            # then close the conversation
+            # then end the conversation
             elif(intent == "Done-conversation"):
                 print("Bot: Such a great pleasure to help you. Have a great day!")
                 break
