@@ -13,6 +13,8 @@ class StoreInfoHandler(BaseHandler):
 
     def create_match_paterns(self):
         # Store-related patterns
+        self.name_pattern = re.compile(
+            r"(name)", re.IGNORECASE)
         self.location_pattern = re.compile(
             r"(where|location|address|street)", re.IGNORECASE)
         self.opening_pattern = re.compile(
@@ -58,6 +60,8 @@ class StoreInfoHandler(BaseHandler):
             request = "postal_code"
         elif self.country_pattern.search(message):
             request = "country"
+        elif self.name_pattern.search(message):
+            request = "name"
 
         return {"request": request} if request else None
 
