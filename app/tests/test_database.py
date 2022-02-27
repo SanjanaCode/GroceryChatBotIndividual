@@ -1,6 +1,6 @@
 import pytest
 from app.products.database import MOCK_PRODUCT_DATA, SQLiteDatabase, DatabaseType
-from app.products.product_info import StoreProductHandler
+from app.products.product_info import ProductInfoHandler
 
 
 class ConvertUtilities:
@@ -98,7 +98,7 @@ class TestSQLiteOnHandler:
     @pytest.fixture()
     def mini_bot(self):
         # Set up
-        mini_bot = StoreProductHandler()
+        mini_bot = ProductInfoHandler()
 
         # Run tests
         yield mini_bot
@@ -106,8 +106,8 @@ class TestSQLiteOnHandler:
         # Clean up
         mini_bot.dispose()
 
-    # Test get_product method on StoreProductHandler
-    def test_get_product(self, mini_bot: StoreProductHandler):
+    # Test get_product method on ProductInfoHandler
+    def test_get_product(self, mini_bot: ProductInfoHandler):
         # Make a sample request for record with id 4011
         list_prod = mini_bot.get_product("id", "4011")
 

@@ -5,7 +5,7 @@ import re
 from collections import OrderedDict
 
 
-class ProductInfoHandler:
+class StoreProductHandler:
     """
     A class used to represent a mini-bot to handle product queries.
 
@@ -30,6 +30,12 @@ class ProductInfoHandler:
         # Set the operation mode (i.e. DEV or PRODUCTION)
         self.runtime_mode = os.getenv("PYTHON_ENV", "DEV")
 
+        # Initialize the mapping from sub-topic and handler
+        self.handler_map = {
+            "product_info": self.handle_product_info,
+            "store_info": self.handle_store_info
+        }
+
         # Create pattern matches
         self.create_match_paterns()
 
@@ -49,6 +55,18 @@ class ProductInfoHandler:
         self.price_pattern = re.compile(
             r"(price|cost|how much)", re.IGNORECASE)
         self.stock_pattern = re.compile(r"(stock|how many)", re.IGNORECASE)
+
+        # Store-related patterns
+        self.location_pattern = re.compile(
+            r"(where|location|address|street)", re.IGNORECASE)
+        self.opening_pattern = re.compile(
+            r"(when|open|close|opening|closing|hours)", re.IGNORECASE)
+        self.phone_pattern = re.compile(r"(phone|number)", re.IGNORECASE)
+        self.website_pattern = re.compile(r"(website|url|web)", re.IGNORECASE)
+        self.city_pattern = re.compile(r"(city|town)", re.IGNORECASE)
+        self.province_pattern = re.compile(r"(province|state)", re.IGNORECASE)
+        self.country_pattern = re.compile(r"(country)", re.IGNORECASE)
+        self.postal_code_pattern = re.compile(r"(postal|zip)", re.IGNORECASE)
 
     def dispose(self):
         """
@@ -77,13 +95,45 @@ class ProductInfoHandler:
 
         response = None
 
-        matched, name, kargs = self.parse_product_info(message=message)
+        # Parse the query
+        topic, kargs = self.parse_query(message=message)
+
+        # Get the handler
+        handler = self.handler_map.get(topic)
+
         # If there is a topic detected, we find the response
         # By calling the handler with the message (for convenience) and its necessary arguments
-        if matched:
-            response = self.handle_product_info(message, **kargs)
+        if handler:
+            response = handler(message, **kargs)
 
         return response
+
+    def parse_query(self, message: str) -> tuple:
+        """
+        Method to parse the query and return the a tuple of (topic_name, arguments for handler).
+
+        This method runs the message via a pipeline of parsers and return the first topic that is detected.
+
+        Parameters
+        ----------
+
+        message : str
+            The message that the user sends to the bot.
+        """
+
+        # Define a topic name and arguments for handler
+        name = None
+        kwargs = {}
+
+        # Check if it a product query
+        matched, name, kwargs = self.parse_product_info(message=message)
+
+        # Check if it is a store query
+        # This only runs if product request parser returns false on status.
+        if not matched:
+            _, name, kwargs = self.parse_store_info(message=message)
+
+        return name, kwargs
 
     # @Paul @Thuan
     # TODO: Implement helper method to parse product information.
@@ -113,6 +163,38 @@ class ProductInfoHandler:
 
         return (is_prod, "product_info", prod_words)
 
+    # @Quan @Paul
+    # TODO: Implement helper method to parse store information.
+    # This method should return a tuple of (boolean, str, dict).
+    # The first item indicates whether this request is about store information.
+    # If false, the other items must be None.
+    def parse_store_info(self, message) -> tuple:
+        is_store = False
+        store_words = {"request": None}
+
+        if self.location_pattern.search(message):
+            store_words["request"] = "address"
+        elif self.opening_pattern.search(message):
+            store_words["request"] = "opening_hours"
+        elif self.phone_pattern.search(message):
+            store_words["request"] = "phone"
+        elif self.website_pattern.search(message):
+            store_words["request"] = "website"
+        elif self.city_pattern.search(message):
+            store_words["request"] = "city"
+        elif self.province_pattern.search(message):
+            store_words["request"] = "province"
+        elif self.postal_code_pattern.search(message):
+            store_words["request"] = "postal_code"
+        elif self.country_pattern.search(message):
+            store_words["request"] = "country"
+
+         # If the request is truly about store
+        if store_words["request"] is not None:
+            is_store = True
+
+        return (is_store, "store_info", store_words)
+
     # @Paul @Thuan
     # TODO: Implement the method to return proper response for product information.
     # Note: This is the signature for all handler methods.
@@ -141,6 +223,15 @@ class ProductInfoHandler:
                 reply = "%s are out of stock." % (
                     product['names'].capitalize())
 
+        return reply
+
+    # @Quan @Paul
+    # TODO: Implement the method to return proper response for product information.
+    # Note: This is the signature for all handler methods.
+    def handle_store_info(self, message=None, **kwargs) -> str:
+        # kwargs are arguments such as product_name, price, operators (<. >)
+        # This really depends on how you define your parser
+        reply = "It is {}".format(STORE_INFO[kwargs["request"]])
         return reply
 
     # @Thuan @Paul @Quan
