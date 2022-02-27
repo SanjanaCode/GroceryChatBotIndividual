@@ -24,6 +24,10 @@ class Bot:
         #until the user ends
         while True:
             user_input = input("You: ")
+            #if user input is empty, prompt the input again
+            if(not user_input):
+                print("Bot: How can I help you?")
+                continue
             #call dialogflow API to detect intent
             response = self.detect_intent_texts(user_input)
             intent = response.intent.display_name            

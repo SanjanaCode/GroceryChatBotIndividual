@@ -16,5 +16,4 @@ class TestIntentRouting:
         assert bot.detect_intent_texts("Where is your store ?").intent.display_name == "store-info", "store-address-info failed"
         assert bot.detect_intent_texts("When do you open ?").intent.display_name == "store-info", "store-time-info failed"
         assert bot.detect_intent_texts("I want to return my order").intent.display_name == "refund-request", "refund-request failed"
-        assert bot.detect_intent_texts("").intent.display_name == "Default Fallback Intent", "Empty string failed"
     
