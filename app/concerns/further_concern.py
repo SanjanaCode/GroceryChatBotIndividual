@@ -21,5 +21,5 @@ class OtherConcerns:
                  #TO DO: Store customer concern in database.
                 print("Our customer service agent will address your issue within 24 hours.")
             else:
-                print("Here is our cutomer service number:416-555-1234\n You can contact this number and our customer service agents will assist you.")
+                print("Here is our customer service number:416-555-1234\n You can contact this number and our customer service agents will assist you.")
         return None

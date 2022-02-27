@@ -71,7 +71,6 @@ class Bot:
         response = self.session_client.detect_intent(
             request={"session": self.session, "query_input": query_input}
         )
-
         return response.query_result
 
     #Based on intent, route to appropriate handler and return response for user input.
