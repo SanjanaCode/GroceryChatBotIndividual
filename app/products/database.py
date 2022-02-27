@@ -10,6 +10,10 @@ MOCK_PRODUCT_DATA = [
                  "price_scale": "per kg", "in_stock": True}),
     OrderedDict({"id": "3022", "name": "strawberry", "names": "strawberries", "price": "3.99",
                  "price_scale": "per box", "in_stock": True}),
+    OrderedDict({"id": "2011", "name": "apple", "names": "apples", "price": "0.49",
+                 "price_scale": "per kg", "in_stock": True}),
+    OrderedDict({"id": "5044", "name": "pear", "names": "pears", "price": "0.87",
+                 "price_scale": "per kg", "in_stock": False}),
 ]
 
 
