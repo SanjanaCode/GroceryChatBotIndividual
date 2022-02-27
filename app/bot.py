@@ -1,7 +1,7 @@
 from google.cloud import dialogflow
 from app.products.product_info import *
 from app.products.store_info import *
-from app.concerns.further_concern import *
+from app.concerns.other_concern import *
 import random
 import sys
 class Bot:
