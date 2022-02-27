@@ -11,7 +11,7 @@ We use Dialogflow agent to detect user's intent and respond accordingly. With th
 
 ### Methods
 
-- `start_conversation`: runs an inifinite loop and prompts for user input. The input is then sent to `detect_intent_texts` to get the intents of types: `Default Welcome Intent`, `Default Fallback Intent`, `product-info`, `store-info`, `other-concerns` and `Done-conversation`. The intent is then passed to `route_to_handler`. The conversation is continued until the user says `bye`.
+- `start_conversation`: runs an inifinite loop and prompts for user input. The input is then sent to `detect_intent_texts` to get the intents of types: `Default Welcome Intent`, `Default Fallback Intent`, `product-info`, `store-info`, `other-concerns` and `Done-conversation`. The intent is then passed to `route_to_handler`. When user types something the bot cannot understand, then the bot asks user to repeat upto 3 times. If the bot still cannot understand after the third attempt, then it directs it to the `other-concerns` handler. The conversation is continued until the user says `bye`.
 
 - `detect_intent_texts`: requests response from the Dialogflow API with user input passed from `start_conversation`.
 
