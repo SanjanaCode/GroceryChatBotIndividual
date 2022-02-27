@@ -1,10 +1,10 @@
 import pytest
 import app.bot as Bot
 
+@pytest.mark.intentDetectionTest
 class TestIntentRouting:
 
-    def __init__(self):
-        self.bot = Bot()
+    bot = Bot()
 
     def test_detect_intent_texts(self):
         assert self.bot.detect_intent_texts("hello") == "Default Welcome Intent", "Default Welcomr Intent failed"
