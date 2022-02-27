@@ -42,16 +42,17 @@ class ProductInfoHandler(BaseHandler):
             request = "stock"
 
         # If the request is truly about product
-        id = None
-        for prod in MOCK_PRODUCT_DATA:
-            prod_name = prod["name"]
-            prod_id = prod["id"]
-            prod_names = prod["names"]
+        if request:
+            id = None
+            for prod in MOCK_PRODUCT_DATA:
+                prod_name = prod["name"]
+                prod_id = prod["id"]
+                prod_names = prod["names"]
 
-            if prod_name in message or prod_id in message or prod_names in message:
-                id = prod["id"]
+                if prod_name in message or prod_id in message or prod_names in message:
+                    id = prod["id"]
 
-        return {"request": request, "id": id}
+        return {"request": request, "id": id} if request else None
 
     def handle_product_info(self, message=None, **kwargs) -> str:
         # kwargs are arguments such as product_name, price, operators (<. >)
