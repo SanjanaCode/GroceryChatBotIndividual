@@ -1,0 +1,5 @@
+google-api-core==2.5.0
+google-auth==2.6.0
+google-cloud-dialogflow==2.11.0
+pylint==2.6.0
+pytest==7.0.1
