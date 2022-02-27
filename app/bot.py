@@ -21,7 +21,7 @@ class Bot:
         self.undetected_intent_count = 0
 
     def start_conversation(self):
-        print("Bot: Hello, how can I help you?")
+        print("""Bot: Hello, welcome to the official chatbot of Walmart. \nHere you can find information about our store, products \nand resolve any further concerns you have. \nHow can I help you today?""")
         #continuously take in user input (or maintain the conversation) 
         #until the user ends
         while True:
