@@ -21,22 +21,22 @@ class Bot:
         self.start_conversation()
 
     def start_conversation(self):
-        print("Hello, how can I help you?")
+        print("Bot: Hello, how can I help you?")
         #continuously take in user input (or maintain the conversation) 
         #until the user ends
         while True:
-            user_input = input()
+            user_input = input("You: ")
             #call dialogflow API to detect intent
             response = self.detect_intent_texts(user_input)
             intent = response.intent.display_name            
             # if user greets (such as "hello"), then greet the user
             if(intent == "Default Welcome Intent"):
-                print(response.fulfillment_text)
+                print("Bot: " + response.fulfillment_text)
                 continue
             # if user ends the converastion (such as "bye"), 
             # then close the conversation
             elif(intent == "Done-conversation"):
-                print("Such a great pleasure to help you. Have a great day!")
+                print("Bot: Such a great pleasure to help you. Have a great day!")
                 break
             # if user asks about store, product, 
             # pass to product-info, store-info in route_to_handle. 
@@ -47,7 +47,7 @@ class Bot:
             # if user asks for refund, 
             # direct to other concerns handler in route_to_handle
             elif(intent == "refund-request"):
-                    print(response.fulfillment_text)
+                    print("Bot: " + response.fulfillment_text)
                     self.route_to_handler("other-concerns", user_input)
             # if intent can not be detected, increment times like this
             # if more than 3 times intent can't be detected, direct to other concerns handler
@@ -60,7 +60,7 @@ class Bot:
                     print(response.fulfillment_text)
                     continue
             # continue the conversation
-            print("What else can I help you?")   
+            print("Bot: What else can I help you?")   
     
     def detect_intent_texts(self,text):
         # Process text_input
