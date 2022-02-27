@@ -1,8 +1,10 @@
 class ProductInfo:
     def prodHandler(self,text):
-        print(text," handled by product info team")
+        text = text+ " handled by product info team"
+        return text
     
 
 class StoreInfo:
     def storeHandler(self,text):
-        print(text," handled by store info team")
+        text = text+ " handled by product info team"
+        return text
