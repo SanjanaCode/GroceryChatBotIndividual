@@ -2,6 +2,7 @@ from google.cloud import dialogflow
 from app.products.product_info import *
 from app.concerns.further_concern import *
 import random
+import sys
 class Bot:
     def __init__(self):
         project_id = "grocery-chat-bot"
@@ -28,8 +29,12 @@ class Bot:
             if(not user_input):
                 print("Bot: How can I help you?")
                 continue
-            #call dialogflow API to detect intent
-            response = self.detect_intent_texts(user_input)
+            #call dialogflow API to detect intent. If there is error, stop the program
+            try:
+                response = self.detect_intent_texts(user_input)
+            except:
+                print("Bot: There is an error on our end. Please try again later.")
+                sys.exit()
             intent = response.intent.display_name            
             # if user greets (such as "hello"), then greet the user
             if(intent == "Default Welcome Intent"):
@@ -39,7 +44,7 @@ class Bot:
             # then end the conversation
             elif(intent == "Done-conversation"):
                 print("Bot: Such a great pleasure to help you. Have a great day!")
-                break
+                sys.exit()
             # if user asks about store, product, 
             # pass to product-info, store-info in route_to_handle. 
             # Set the undetected intent count to 0
@@ -65,15 +70,18 @@ class Bot:
             print("Bot: What else can I help you?")   
     
     def detect_intent_texts(self,text):
-        # Process text_input
-        text_input = dialogflow.TextInput(text=text, language_code=self.language_code)
-        # Call Dialogflow API
-        query_input = dialogflow.QueryInput(text=text_input)
+        try:
+            # Process text_input
+            text_input = dialogflow.TextInput(text=text, language_code=self.language_code)
+            # Call Dialogflow API
+            query_input = dialogflow.QueryInput(text=text_input)
 
-        response = self.session_client.detect_intent(
-            request={"session": self.session, "query_input": query_input}
-        )
-        return response.query_result
+            response = self.session_client.detect_intent(
+                request={"session": self.session, "query_input": query_input}
+            )
+            return response.query_result
+        except:
+            raise Exception("Dialogflow API error")
 
     #Based on intent, route to appropriate handler and return response for user input.
     def route_to_handler(self, intentDetected ,userText):
