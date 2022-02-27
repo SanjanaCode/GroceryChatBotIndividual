@@ -1,17 +1,20 @@
 import pytest
-import app.bot as Bot
+from app.bot import Bot
+from google.cloud import dialogflow
 
 @pytest.mark.intentDetectionTest
 class TestIntentRouting:
 
-    bot = Bot()
+    @pytest.fixture
+    def bot(self):
+        return Bot()
 
-    def test_detect_intent_texts(self):
-        assert self.bot.detect_intent_texts("hello") == "Default Welcome Intent", "Default Welcomr Intent failed"
-        assert self.bot.detect_intent_texts("bye") == "Done-conversation", "Done-conversation failed"
-        assert self.bot.detect_intent_texts("What is the price of an apple ?") == "product-info", "product-info failed"
-        assert self.bot.detect_intent_texts("Where is your store ?") == "store-info", "store-address-info failed"
-        assert self.bot.detect_intent_texts("When do you open ?") == "store-info", "store-time-info failed"
-        assert self.bot.detect_intent_texts("I want to return my order") == "refund-request", "refund-request failed"
-        assert self.bot.detect_intent_texts("") == "Default Fallback Intent", "Empty string failed"
+    def test_detect_intent_texts(self,bot):
+        assert bot.detect_intent_texts("hello").intent.display_name == "Default Welcome Intent", "Default Welcome Intent failed"
+        assert bot.detect_intent_texts("bye").intent.display_name == "Done-conversation", "Done-conversation failed"
+        assert bot.detect_intent_texts("What is the price of an apple ?").intent.display_name == "product-info", "product-info failed"
+        assert bot.detect_intent_texts("Where is your store ?").intent.display_name == "store-info", "store-address-info failed"
+        assert bot.detect_intent_texts("When do you open ?").intent.display_name == "store-info", "store-time-info failed"
+        assert bot.detect_intent_texts("I want to return my order").intent.display_name == "refund-request", "refund-request failed"
+        assert bot.detect_intent_texts("").intent.display_name == "Default Fallback Intent", "Empty string failed"
     

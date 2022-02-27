@@ -17,8 +17,6 @@ class Bot:
         self.intents = {}
         #keep track of times the intent is not detected
         self.undetected_intent_count = 0
-        #initiate conversation with customer
-        self.start_conversation()
 
     def start_conversation(self):
         print("Hello, how can I help you?")
