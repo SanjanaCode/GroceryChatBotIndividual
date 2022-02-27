@@ -85,7 +85,7 @@ class Bot:
             raise Exception("Dialogflow API error")
 
     #Based on intent, route to appropriate handler and return response for user input.
-    def route_to_handler(self, intentDetected ,userText):
+    def route_to_handler(self, intentDetected, userText):
         #If the question is about (detected intent) product info, direct it to the product information handler. Handler returns a response to user question. 
         #If the intent is not currently handled by the bot, create a new intent for it.
         if(intentDetected == "product-info"):
