@@ -1,5 +1,6 @@
 from google.cloud import dialogflow
 from app.products.product_info import *
+from app.products.store_info import *
 from app.concerns.further_concern import *
 import random
 import sys
@@ -49,7 +50,7 @@ class Bot:
             # pass to product-info, store-info in route_to_handle. 
             # Set the undetected intent count to 0
             elif(intent == "product-info" or intent == "store-info"):
-                print(self.route_to_handler(intent, user_input))
+                print("Bot: " + self.route_to_handler(intent, user_input))
                 self.undetected_intent_count = 0
             # if user asks for refund, 
             # direct to other concerns handler in route_to_handle
@@ -64,7 +65,7 @@ class Bot:
                     self.route_to_handler("other-concerns", user_input)
                     self.undetected_intent_count = 0
                 else:
-                    print(response.fulfillment_text)
+                    print("Bot: " + response.fulfillment_text)
                     continue
             # continue the conversation
             print("Bot: What else can I help you?")   
@@ -89,18 +90,18 @@ class Bot:
         #If the intent is not currently handled by the bot, create a new intent for it.
         if(intentDetected == "product-info"):
             if("product-info" not in self.intents):
-                self.intents["product-info"] = ProductInfo()
-            response = self.intents["product-info"].prodHandler(userText)
+                self.intents["product-info"] = ProductInfoHandler()
+            response = self.intents["product-info"].handle(userText)
 
         #If the question is about (detected intent) product info, direct it to the product information handler. Handler returns a response to user question. 
         elif(intentDetected == "store-info"):
             if("store-info" not in self.intents):
-                self.intents["store-info"] = StoreInfo()
-            response = self.intents["store-info"].storeHandler(userText)
+                self.intents["store-info"] = StoreInfoHandler()
+            response = self.intents["store-info"].handle(userText)
 
         #If intent cannot be detected or customer has further concerns, direct it to the other concerns handler. Handler returns a response to user question.
         else:
             if("other-concerns" not in self.intents):     
                 self.intents["other-concerns"] = OtherConcerns() 
-            response = self.intents["other-concerns"].concernsHandler()
+            response = self.intents["other-concerns"].handle()
         return response
