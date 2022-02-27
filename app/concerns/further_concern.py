@@ -1,11 +1,6 @@
 class OtherConcerns:
-<<<<<<< HEAD
-    #method:return response for concerns other than store info and product info
-    def concernsHandler(self):
-=======
     #method:return response for other concerns
-    def concernsHandler(self, userText):
->>>>>>> greetings
+    def concernsHandler(self):
         #Ask user if they would want to visit store
         print("Would you like to visit our store to resolve your concerns?")
         userInput = input().lower() 
@@ -27,3 +22,4 @@ class OtherConcerns:
                 print("Our customer service agent will address your issue within 24 hours.")
             else:
                 print("Here is our cutomer service number:416-555-1234\n You can contact this number and our customer service agents will assist you.")
+        return None

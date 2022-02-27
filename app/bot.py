@@ -42,7 +42,7 @@ class Bot:
             # pass to product-info, store-info in route_to_handle. 
             # Set the undetected intent count to 0
             elif(intent == "product-info" or intent == "store-info"):
-                self.route_to_handler(intent, user_input)
+                print(self.route_to_handler(intent, user_input))
                 self.undetected_intent_count = 0
             # if user asks for refund, 
             # direct to other concerns handler in route_to_handle
@@ -81,14 +81,15 @@ class Bot:
         if(intentDetected == "product-info"):
             if("product-info" not in self.intents):
                 self.intents["product-info"] = ProductInfo()
-            self.intents["product-info"].prodHandler(userText)
+            response = self.intents["product-info"].prodHandler(userText)
         elif(intentDetected == "store-info"):
             if("store-info" not in self.intents):
                 self.intents["store-info"] = StoreInfo()
-            self.intents["store-info"].storeHandler(userText)
+            response = self.intents["store-info"].storeHandler(userText)
         #If intent cannot be detected or customer has further concerns, direct it to the other concerns handler   
         else:
             #if object for other-concerns is not already in the intents map, create a new object. Else invoke handler using existing object. 
             if("other-concerns" not in self.intents):     
                 self.intents["other-concerns"] = OtherConcerns() 
-            self.intents["other-concerns"].concernsHandler(userText)
+            response = self.intents["other-concerns"].concernsHandler()
+        return response
