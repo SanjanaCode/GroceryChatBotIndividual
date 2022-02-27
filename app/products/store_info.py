@@ -84,9 +84,7 @@ class StoreInfoHandler:
 
         matched, name, kargs = self.parse_store_info(message=message)
         
-        # If there is a topic detected, we find the response
         # By calling the handler with the message (for convenience) and its necessary arguments
-        
         if matched:
             response = self.handle_store_info(message, **kargs)
 
