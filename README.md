@@ -149,7 +149,7 @@ The database api also allows queries straight from the database.
 
 `Example import for database:`
 ```console
-from app.products.database import MOCK_PRODUCT_DATA, SQLiteDatabase, DatabaseType
+from app.products.database import SQLiteDatabase, DatabaseType
 ```
 
 `Database lifecycle:`
