@@ -9,11 +9,11 @@ The chatbot will do so by doing a basic check of the user input, and redirecting
 ## Table of contents
 
 * [Setup](#setup)
-  * [Windows](#windows)
-  * [Unix](#unix-(bash))
-  * [Run Bot](#run))
+  * [Windows](#windows-powershell)
+  * [Unix](#unix-bash)
+  * [Run Bot](#run)
 * [Main Bot (input/output)](#main-bot)
-* [Mini Bots (products & store information)](#product-&-store-mini-bots)
+* [Mini Bots (products & store information)](#product--store-mini-bots)
 * [Tests](#tests)
   * [All cases](#test-all-cases)
   * [Selected cases](#test-selected-cases)
@@ -69,6 +69,7 @@ This mini-bot will handle any question related to product price, stock, and stor
 See in-depth documentation [here](app/products/README.md).
 
 ## Tests
+We are using pytest for all of our tests. Our test cases can be found in the `test` folder.
 
 ### Test all cases:
 ```console
@@ -144,6 +145,7 @@ output = StoreHandler.parse(message)
 ```
 
 ### Database API
+The database api also allows queries straight from the database.
 
 `Example import for database:`
 ```console
@@ -162,7 +164,7 @@ db.close()
 `get_product("id", int) -> List`
 ```
 output = db.get_product("id", "4011")
-# returns array: [OrderedDict([('id', '4011'), ('name', 'banana'), ('names', 'bananas'), ('price', 0.67), ('price_scale', 'per kg'), ('in_stock', True)])]
+# returns list: [OrderedDict([('id', '4011'), ('name', 'banana'), ('names', 'bananas'), ('price', 0.67), ('price_scale', 'per kg'), ('in_stock', True)])]
 ```
 
 `execute_query(string) -> database cursor`
