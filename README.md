@@ -1,6 +1,9 @@
 # grocery-chat-bot
+
 ###### An assistant chatbot for a grocery store that helps answer customer queries.
-The chatbot will greet the user, than answer their question about store/product information other, more complex concerns.
+
+The chatbot will greet the user, then answer their question about store/product information other, more complex concerns.
+
 The chatbot will do so by doing a basic check of the user input, and redirecting the query to the appropriate mini-bot, where a more in-depth response will be handled. If the bot cannot decipher the user's message, they will be provided with the store's email, phone number, and hours to talk to a real employee.
 
 ## Table of contents
@@ -20,36 +23,48 @@ The chatbot will do so by doing a basic check of the user input, and redirecting
 
 ## Setup
 
-### Windows
+### Windows (PowerShell)
 
-Creating virtual environment to run the bot:
-```console
+Creating virtual environment and install dependencies to run the bot:
+```bash
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
 Setting up the environment variables for the bot (Google cloud key).
-```console
+```bash
 $env:GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"
 ```
 
-### Mac OS
+### Unix (Bash)
 
-Creating virtual environment to run the bot:
-```console
-install.sh
+Creating virtual environment and install dependencies to run the bot:
+
+```bash
+./install.sh
 ```
 
 Setting up the environment variables for the bot (Google cloud key).
-```console
-$env:GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"
 ```
+
+## Run
+```bash
+python main.py
+```
+
 ## Main Bot
+
 The main bot will handle all inputs and ouputs from the user.
+
 See in-depth documentation [here](app/greetings/README.md).
-## Mini Bots
+
+## Product & Store Mini-bots
+
 This mini-bot will handle any question related to product price, stock, and store information. The bot first determines what topic is of interest (product or store information) and breaks the user's message down into keywords. The bot then compares these words and checks them in order to create the most appropriate response, and returns the response to the main bot.
+
 See in-depth documentation [here](app/products/README.md).
 
 ## Tests
@@ -181,3 +196,6 @@ output = query_result_to_str(db.execute_query("SELECT * FROM product;"))
 # 8088,bread,bread,2.99,per loaf,1"
 # Each product has a unique id, name, names, price, price_scale, and in_stock.
 ```
+
+
+
