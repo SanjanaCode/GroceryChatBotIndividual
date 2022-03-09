@@ -16,6 +16,8 @@ class ProductInfoHandler(BaseHandler):
         self.price_pattern = re.compile(
             r"(price|cost|how much)", re.IGNORECASE)
         self.stock_pattern = re.compile(r"(stock|how many)", re.IGNORECASE)
+        self.nutrition_pattern = re.compile(
+            r"(calories|protein|carbs|carbohydrates|sugar|fat)", re.IGNORECASE)
 
     def dispose(self):
         super().dispose()
@@ -36,7 +38,9 @@ class ProductInfoHandler(BaseHandler):
         request = None
 
         # Check for keywords for prices
-        if self.price_pattern.search(message):
+        if self.nutrition_pattern.search(message):
+            request = "nutrition"
+        elif self.price_pattern.search(message):
             request = "price"
         elif self.stock_pattern.search(message):
             request = "stock"
@@ -77,5 +81,8 @@ class ProductInfoHandler(BaseHandler):
             else:
                 reply = "%s are out of stock." % (
                     product['names'].capitalize())
+        elif prod_msg_type == "nutrition":
+            reply = "%s Nutrition Facts: Calories = %s, Protein = %s, Carbs = %s, Sugar = %s, Fat = %s." % (
+                product['name'].capitalize(), product['calories'], product['protein'], product['carbs'], product['sugar'], product['fat'])
 
         return reply
