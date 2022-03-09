@@ -10,9 +10,10 @@ The chatbot will do so by doing a basic check of the user input, and redirecting
 
 * [Setup](#setup)
   * [Windows](#windows)
-  * [MacOS](#mac-os)
+  * [Unix](#unix-(bash))
+  * [Run Bot](#run))
 * [Main Bot (input/output)](#main-bot)
-* [Mini Bots (products & store information)](#mini-bots)
+* [Mini Bots (products & store information)](#product-&-store-mini-bots)
 * [Tests](#tests)
   * [All cases](#test-all-cases)
   * [Selected cases](#test-selected-cases)
@@ -196,6 +197,3 @@ output = query_result_to_str(db.execute_query("SELECT * FROM product;"))
 # 8088,bread,bread,2.99,per loaf,1"
 # Each product has a unique id, name, names, price, price_scale, and in_stock.
 ```
-
-
-
