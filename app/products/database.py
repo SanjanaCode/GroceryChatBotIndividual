@@ -64,7 +64,12 @@ class SQLiteDatabase:
                 names VARCHAR(55) NOT NULL,
                 price DECIMAL(8,2),
                 price_scale VARCHAR(10),
-                in_stock INT NOT NULL
+                in_stock INT NOT NULL,
+                calories INT NOT NULL,
+                protein VARCHAR(10) NOT NULL,
+                carbs VARCHAR(10) NOT NULL,
+                sugar VARCHAR(10) NOT NULL,
+                fat VARCHAR(10) NOT NULL
             );
         """
         self.execute_update(create_table_sql)
@@ -73,7 +78,7 @@ class SQLiteDatabase:
 
         for prod in MOCK_PRODUCT_DATA:
             insert_sql = f"""
-            INSERT INTO product VALUES ("{prod['id']}", "{prod['name']}", "{prod['names']}", {prod['price']}, "{prod['price_scale']}", {prod['in_stock']});
+            INSERT INTO product VALUES ("{prod['id']}", "{prod['name']}", "{prod['names']}", {prod['price']}, "{prod['price_scale']}", {prod['in_stock']}, {prod['calories']}, "{prod['protein']}", "{prod['carbs']}", "{prod['sugar']}", "{prod['fat']}");
             """
             self.execute_update(insert_sql)
         self.conn.commit()
@@ -153,7 +158,12 @@ class SQLiteDatabase:
                     "names": row[2],
                     "price": row[3],
                     "price_scale": row[4],
-                    "in_stock": True if row[5] > 0 else False
+                    "in_stock": True if row[5] > 0 else False,
+                    "calories": row[6],
+                    "protein": row[7],
+                    "carbs": row[8],
+                    "sugar": row[9],
+                    "fat": row[10]
                 }
             )
 

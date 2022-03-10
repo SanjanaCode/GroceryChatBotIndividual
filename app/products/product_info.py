@@ -17,7 +17,7 @@ class ProductInfoHandler(BaseHandler):
             r"(price|cost|how much)", re.IGNORECASE)
         self.stock_pattern = re.compile(r"(stock|how many)", re.IGNORECASE)
         self.nutrition_pattern = re.compile(
-            r"(calories|protein|carbs|carbohydrates|sugar|fat)", re.IGNORECASE)
+            r"(calories|protein|carbs|carbohydrates|sugar|fat|nutrition|nutritional)", re.IGNORECASE)
 
     def dispose(self):
         super().dispose()
@@ -68,6 +68,8 @@ class ProductInfoHandler(BaseHandler):
 
         # Since id is unique, we can assume there is only one product
         product = products[0]
+
+        print(product)
 
         reply = None
 
