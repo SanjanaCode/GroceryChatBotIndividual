@@ -18,9 +18,13 @@ The chatbot will do so by doing a basic check of the user input, and redirecting
   * [All cases](#test-all-cases)
   * [Selected cases](#test-selected-cases)
 * [API](#api)
-  * [Store Info Bot API](#store-info-bot-api)
-  * [Product Info Bot API](#product-info-bot-api)
+  * [Store Info API](#store-info-api)
+  * [Product Info API](#product-info-api)
   * [Database API](#database-api)
+* [New Features](#new-features)
+  * [Nutrition Sub-Topic](#nutrition-sub-topic)
+  * [5 Reasonable Responses](#5-reasonable-responses-outside-of-the-topic)
+  * [Spelling Mistakes](#spelling-mistakes)
 
 ## Setup
 
@@ -167,7 +171,7 @@ output = db.get_product("id", "4011")
 # returns list: [OrderedDict([('id', '4011'), ('name', 'banana'), ('names', 'bananas'), ('price', 0.67), ('price_scale', 'per kg'), ('in_stock', True)])]
 ```
 
-## Assignment 3 Features
+## New Features
 
 ### Nutrition Sub-Topic
 
