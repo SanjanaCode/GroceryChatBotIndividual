@@ -69,8 +69,6 @@ class ProductInfoHandler(BaseHandler):
         # Since id is unique, we can assume there is only one product
         product = products[0]
 
-        print(product)
-
         reply = None
 
         prod_msg_type = kwargs.get("request")
