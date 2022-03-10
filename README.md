@@ -2,7 +2,7 @@
 
 ###### An assistant chatbot for a grocery store that helps answer customer queries.
 
-The chatbot will greet the user, then answer their question about store/product information other, more complex concerns.
+The chatbot will greet the user, then answer their question about store/product information or other, more complex concerns.
 
 The chatbot will do so by doing a basic check of the user input, and redirecting the query to the appropriate mini-bot, where a more in-depth response will be handled. If the bot cannot decipher the user's message, they will be provided with the store's email, phone number, and hours to talk to a real employee.
 
@@ -64,12 +64,12 @@ See in-depth documentation [here](app/greetings/README.md).
 
 ## Product & Store Mini-bots
 
-This mini-bot will handle any question related to product price, stock, and store information. The bot first determines what topic is of interest (product or store information) and breaks the user's message down into keywords. The bot then compares these words and checks them in order to create the most appropriate response, and returns the response to the main bot.
+This mini-bot will handle any question related to product price, stock, nutrition, and store information. The bot first determines what topic is of interest (product or store information) and breaks the user's message down into keywords. The bot then compares these words and checks them in order to create the most appropriate response, and returns the response to the main bot.
 
 See in-depth documentation [here](app/products/README.md).
 
 ## Tests
-We are using pytest for all of our tests. Our test cases can be found in the `test` folder.
+We are using `pytest` for all of our tests. Our test cases can be found in the `test` folder.
 
 ### Test all cases:
 ```console
@@ -81,7 +81,7 @@ python -m pytest
 - database
 - store_info
 - prod_info
-- intentDetectionTest
+- intent_detection_test
 
 ```console
 python -m pytest -v -m <selected case>
@@ -90,9 +90,9 @@ python -m pytest -v -m <selected case>
 ## API
 You can call the API from any other Python script to check store's information or products information. This does not require the bot to be running or a diagflow key.
 
-**Make sure to import the correctly, as the API is not imported by default, and is dependent on your project's file hierarchy.**
+**Make sure to import the API correctly, as the API is not imported by default, and is dependent on your project's file hierarchy.**
 
-### Store Info Bot API
+### Store Info API
 
 From this bot you can query the store's information.
 
@@ -118,7 +118,7 @@ print(StoreHandler.parse(message))
 # returns object: {'request': 'address'}
 ```
 
-### Product Info Bot API
+### Product Info API
 
 From this bot you can query the store's products information.
 
@@ -145,7 +145,7 @@ output = StoreHandler.parse(message)
 ```
 
 ### Database API
-The database api also allows queries straight from the database.
+The database API also allows queries straight from the database.
 
 `Example import for database:`
 ```console
@@ -167,35 +167,23 @@ output = db.get_product("id", "4011")
 # returns list: [OrderedDict([('id', '4011'), ('name', 'banana'), ('names', 'bananas'), ('price', 0.67), ('price_scale', 'per kg'), ('in_stock', True)])]
 ```
 
-`execute_query(string) -> database cursor`
-```
-output = db.execute_query("SELECT * FROM product;")
-#returns cursor: <sqlite3.Cursor object at 0x000001CB91165810>
-```
-To get the data from the cursor, use this custom function (can be modified):
-```console
-def query_result_to_str(cursor):
-        result = []
-        for row in cursor:
-            row_data = []
-            for attr in row:
-                row_data.append(str(attr))
+## Assignment 3 Features
 
-            # Convert last attr
-            row_data[-1] = "1" if row_data[-1] else "0"
-            result.append(",".join(row_data))
+### Nutrition Sub-Topic
 
-        return "\n".join(result).
-```
+With nutrition sub-topic, the bot will also provide nutrition information for the product, which will help user decide whether to buy the product or not.
 
-Example case:
+![nutrition-snippet](snippets/nutrition.png)
 
-```console
-output = query_result_to_str(db.execute_query("SELECT * FROM product;"))
-# returns string: "4011,banana,bananas,0.67,per kg,1
-# 3022,strawberry,strawberries,3.99,per box,1
-# 2011,apple,apples,0.49,per kg,1
-# 5044,pear,pears,0.87,per kg,1
-# 8088,bread,bread,2.99,per loaf,1"
-# Each product has a unique id, name, names, price, price_scale, and in_stock.
-```
+### 5 Reasonable responses outside of the topic
+
+With 5 reasonable responses outside of the topic, the bot will provide a more fluent response to the user. This will help the user reword their question if the bot does not understand the question or variety in bot's responses, such as refund or replacement for the product, which allows for more smooth and realistic conversation.
+
+![response-snippet](snippets/response.png)
+
+### Spelling Mistakes
+
+With spelling mistakes handled by Google's Diagflow API, the bot will provide a more accurate response to the user.
+
+![correcttion-snippet](snippets/correction.png)
+
