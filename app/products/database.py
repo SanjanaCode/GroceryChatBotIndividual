@@ -65,11 +65,11 @@ class SQLiteDatabase:
                 price DECIMAL(8,2),
                 price_scale VARCHAR(10),
                 in_stock INT NOT NULL,
-                calories INT NOT NULL,
-                protein VARCHAR(10) NOT NULL,
-                carbs VARCHAR(10) NOT NULL,
-                sugar VARCHAR(10) NOT NULL,
-                fat VARCHAR(10) NOT NULL
+                calories INT,
+                protein VARCHAR(10),
+                carbs VARCHAR(10),
+                sugar VARCHAR(10),
+                fat VARCHAR(10)
             );
         """
         self.execute_update(create_table_sql)

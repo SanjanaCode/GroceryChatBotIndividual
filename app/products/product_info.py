@@ -14,10 +14,10 @@ class ProductInfoHandler(BaseHandler):
     def create_match_paterns(self):
         # Product-related patterns
         self.price_pattern = re.compile(
-            r"(price|cost|how much)", re.IGNORECASE)
-        self.stock_pattern = re.compile(r"(stock|how many)", re.IGNORECASE)
+            r"(price|cost|how much|money)", re.IGNORECASE)
+        self.stock_pattern = re.compile(r"(stock|how many|amount)", re.IGNORECASE)
         self.nutrition_pattern = re.compile(
-            r"(calories|protein|carbs|carbohydrates|sugar|fat|nutrition|nutritional)", re.IGNORECASE)
+            r"(calories|protein|carbs|carbohydrates|sugar|fat|nutrition|nutritional|weight|health|healthy)", re.IGNORECASE)
 
     def dispose(self):
         super().dispose()
