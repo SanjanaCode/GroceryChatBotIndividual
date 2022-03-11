@@ -58,7 +58,7 @@ class TestNutritionInfo:
         expectedOutput = "%s Nutrition Facts: Calories = %s, Protein = %s, Carbs = %s, Sugar = %s, Fat = %s." % (MOCK_PRODUCT_DATA[3]["name"].capitalize(), MOCK_PRODUCT_DATA[3]["calories"], MOCK_PRODUCT_DATA[3]["protein"], MOCK_PRODUCT_DATA[3]["carbs"], MOCK_PRODUCT_DATA[3]["sugar"], MOCK_PRODUCT_DATA[3]["fat"])
         assert(classTest.handle(message) == expectedOutput)
 
-    def test_handler_nutrition_pear(self, classTest):
+    def test_handler_nutrition_error(self, classTest):
         message = "What is the nutrition of anything?"
         try:
             reply = classTest.handle(message)
