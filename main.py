@@ -1,4 +1,5 @@
-from app.bot import Bot
+# from app.bot import Bot
+from dialogflow_migration.bot import Bot
 
 def main():
     bot = Bot()
