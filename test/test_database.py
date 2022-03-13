@@ -1,5 +1,5 @@
 import pytest
-from app.products.database import MOCK_PRODUCT_DATA, SQLiteDatabase, DatabaseType
+from app.database import MOCK_PRODUCT_DATA, SQLiteDatabase, DatabaseType
 from app.products.product_info import ProductInfoHandler
 
 

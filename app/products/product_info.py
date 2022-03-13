@@ -1,4 +1,4 @@
-from app.products.database import MOCK_PRODUCT_DATA
+from app.database import MOCK_PRODUCT_DATA
 import re
 from app.products.base_handler import BaseHandler
 

@@ -1,6 +1,6 @@
 from abc import abstractmethod
 import os
-from app.products.database import DatabaseType, SQLiteDatabase
+from app.database import DatabaseType, SQLiteDatabase
 
 
 class BaseHandler:
