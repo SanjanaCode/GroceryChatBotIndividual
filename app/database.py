@@ -1,10 +1,12 @@
 
 from __future__ import annotations
+from datetime import date
 import sqlite3
 import os
 from enum import Enum, unique
 from collections import OrderedDict
 from app.error import SQLException
+from datetime import datetime, timezone
 
 # Add data as needed
 MOCK_PRODUCT_DATA = [
@@ -201,7 +203,7 @@ class SQLiteDatabase:
 
         return products
 
-    def save_concern(self, session_id, phone_num, desc, status=False):
+    def save_concern(self, session_id, phone_num, desc, datetime, status=False):
         """Method to save concern request into the database.
 
         Parameters
@@ -221,7 +223,7 @@ class SQLiteDatabase:
         """
         if not self.conn:
             raise SQLException("Connection is not initialized yet!")
-        insert_sql = f"INSERT INTO concerns (session_id, phone_num, desc, date_created, status) VALUES ('{session_id}', '{phone_num}', '{desc}', datetime('now'), {1 if status else 0});"
+        insert_sql = f"INSERT INTO concerns (session_id, phone_num, desc, date_created, status) VALUES ('{session_id}', '{phone_num}', '{desc}', '{datetime}', {1 if status else 0});"
         self.execute_update(insert_sql)
 
 
@@ -237,7 +239,6 @@ class PrintUtility:
         # sqlite_schema (type TEXT, name TEXT, tbl_name TEXT,rootpage INTEGER,sql TEXT)
         for table in schema:
             print(table)
-
 
 def main():
     db = SQLiteDatabase.instance()
@@ -258,7 +259,9 @@ def main():
     print("\n-------------------\n")
 
     # Checking complains info
-    db.save_concern(session_id="ABC123DEF0", phone_num="1234567890", desc="Something is wrong", status = True)
+    current_time = datetime.now(timezone.utc).isoformat(sep=" ", timespec="seconds")
+    current_time = current_time[0: current_time.index("+")] # Remove timezone offset
+    db.save_concern(session_id="ABC123DEF0", phone_num="1234567890", desc="Something is wrong", datetime= current_time ,status = True)
     PrintUtility.print_result(cursor=db.execute_query("SELECT * FROM concerns"))
 
     print("\n-------------------\n")
