@@ -1,7 +1,7 @@
 import pytest
 from app.database import MOCK_PRODUCT_DATA, SQLiteDatabase, DatabaseType
 from app.products.product_info import ProductInfoHandler
-
+from datetime import datetime, timezone
 
 class ConvertUtilities:
     # Utility method to convert result set into string
@@ -62,6 +62,7 @@ class ConvertUtilities:
 class TestSQLiteDatabase:
 
     # This will run for all tests defined in this module
+    # Scope: function (run all test functions)
     @pytest.fixture()
     def db(self):
         # Set up
@@ -136,3 +137,26 @@ class TestSQLiteDatabase:
         # Check on id so there is either none or 1 product in list
         assert ConvertUtilities.record_to_str(
             return_prod) == ConvertUtilities.record_to_str(expect_prod)
+ 
+    # Test save a complain into the database
+    def test_save_concern(self, db: SQLiteDatabase):
+        # Get the information
+        current_time = datetime.now(timezone.utc).isoformat(sep=" ", timespec="seconds")
+        current_time = current_time[0: current_time.index("+")] # Remove timezone offset
+
+        # Call insert into the database
+        db.save_concern(session_id="ABC123DEF0", phone_num="1234567890", desc="Something is wrong", datetime= current_time ,status = True)
+
+        # Get the number of row
+        cursor = db.execute_query("SELECT COUNT(*) FROM concerns;")
+        num_of_row = cursor.fetchone()[0] # Fetch a row and extract its first field
+
+        assert num_of_row == 1  # Check the number of rows
+
+        # Select the first concern from the database
+        cursor = db.execute_query("SELECT * FROM concerns;")
+
+        result_str = ConvertUtilities.query_result_to_str(cursor=cursor)
+        expected_str = f"1,ABC123DEF0,1234567890,Something is wrong,{current_time},1"
+
+        assert result_str == expected_str
