@@ -80,6 +80,19 @@ class SQLiteDatabase:
             self.execute_update(insert_sql)
         self.conn.commit()
 
+        # Create a table for concerns/complaints
+        create_table_sql = """
+            CREATE TABLE concerns (
+                id INT PRIMARY KEY,
+                session_id CHAR(10) NOT NULL, 
+                phone_num CHAR(10) NOT NULL, 
+                desc VARCHAR(1000) NOT NULL, 
+                date_created DATETIME NOT NULL,
+                status INT NOT NULL
+            );
+        """
+        self.execute_update(create_table_sql)
+
     def connect(self):
         self.conn = sqlite3.connect(self.database_config)
 
