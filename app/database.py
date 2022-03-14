@@ -112,7 +112,7 @@ class SQLiteDatabase:
         query: str
             The select query to execute.
         """
-        return self.conn.execute(query)
+        return self.conn.cursor().execute(query)
 
     def execute_update(self, update_query):
         """
@@ -123,7 +123,7 @@ class SQLiteDatabase:
         update_query: str
             The update query to execute.
         """
-        self.conn.execute(update_query)
+        return self.conn.cursor().execute(update_query)
 
     def get_product(self, attr: str, value=None) -> list:
         """
