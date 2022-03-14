@@ -66,7 +66,7 @@ class SQLiteDatabase:
                 names VARCHAR(55) NOT NULL,
                 price DECIMAL(8,2),
                 price_scale VARCHAR(10),
-                in_stock INT NOT NULL
+                in_stock INTEGER NOT NULL
             );
         """
         self.execute_update(create_table_sql)
@@ -83,7 +83,7 @@ class SQLiteDatabase:
         # Create a table for concerns/complaints
         create_table_sql = """
             CREATE TABLE concerns (
-                id INT PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 session_id CHAR(10) NOT NULL, 
                 phone_num CHAR(10) NOT NULL, 
                 desc VARCHAR(1000) NOT NULL, 
