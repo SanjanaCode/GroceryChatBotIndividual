@@ -223,28 +223,50 @@ class SQLiteDatabase:
             raise SQLException("Connection is not initialized yet!")
         insert_sql = f"INSERT INTO concerns (session_id, phone_num, desc, date_created, status) VALUES ('{session_id}', '{phone_num}', '{desc}', datetime('now'), {1 if status else 0});"
         self.execute_update(insert_sql)
-    
-def main():
-    db = SQLiteDatabase.instance()
-    db.connect()
-    db.init_database()
 
-    def print_result(cursor):
+
+class PrintUtility:
+    @staticmethod
+    def print_result(cursor:sqlite3.Cursor):
         print(tuple([desc[0] for desc in cursor.description])) # Print column names
         cursor.description
         for row in cursor:
             print(row)
+    @staticmethod
+    def print_metadata(schema: sqlite3.Cursor):
+        # sqlite_schema (type TEXT, name TEXT, tbl_name TEXT,rootpage INTEGER,sql TEXT)
+        for table in schema:
+            print(table)
+
+
+def main():
+    db = SQLiteDatabase.instance()
+    db.connect()
+    db.init_database()
+    # Checking table metata
+    PrintUtility.print_metadata(schema=db.execute_query("""
+        SELECT name FROM sqlite_schema
+        WHERE type='table'
+        ORDER BY name;
+    """))
+
+    print("\n-------------------\n")
 
     # Checking product info
-    print_result(cursor=db.execute_query("SELECT * FROM product"))
-    print("\n-------------------\n")
-    # Checking complains info
-    db.save_concern(session_id="ABC123DEF0", phone_num="1234567890", desc="Something is wrong", status = True)
-    print_result(cursor=db.execute_query("SELECT * FROM concerns"))
+    PrintUtility.print_result(cursor=db.execute_query("SELECT * FROM product"))
 
     print("\n-------------------\n")
+
+    # Checking complains info
+    db.save_concern(session_id="ABC123DEF0", phone_num="1234567890", desc="Something is wrong", status = True)
+    PrintUtility.print_result(cursor=db.execute_query("SELECT * FROM concerns"))
+
+    print("\n-------------------\n")
+
     # Check if calling instance() again returns the same instance
     print(f"Checking SQLiteDatabase.instance() == SQLiteDatabase.instance(): {db is SQLiteDatabase.instance()}\n")
+
+    # Clean up
     db.close()
 
 # Use for testing
