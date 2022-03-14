@@ -32,13 +32,15 @@ STORE_INFO = {
     "price": "0.99 - 5.99 cad",
 }
 
-
 @unique
 class DatabaseType(Enum):
     MEMORY = 0
     DATAFILE = 1
 
-
+class SQLException(Exception):
+    """Raise when there is an error in executing an SQL statement.
+    """
+    pass
 class SQLiteDatabase:
     """
     Class to interact with the database.
