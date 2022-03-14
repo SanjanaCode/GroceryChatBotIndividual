@@ -178,7 +178,28 @@ class SQLiteDatabase:
 
         return products
 
+    def save_concern(self, session_id, phone_num, desc, status=False):
+        """
+        Method to save concern request into the database.
 
+        Parameters
+        ----------
+
+        session_id: str
+            The session id for the concern request.
+
+        phone_num: str
+            The phone number to contact the sender.
+
+        desc: str
+            The content of the request (maximum 1000 characters).
+
+        status: boolean
+            Whether the request is resolved.
+        """
+        insert_sql = f"INSERT INTO concerns (session_id, phone_num, desc, date_created, status) VALUES ({session_id}, {phone_num}, {desc}, datetime('now'), {status});"
+        self.execute_update(insert_sql)
+    
 def main():
     db = SQLiteDatabase(DatabaseType.MEMORY)
     db.connect()
