@@ -125,9 +125,6 @@ class SQLiteDatabase:
         """
         self.conn.execute(update_query)
 
-    # @Thuan @Paul @Quan
-    # TODO: Once database is improved for use, we can have a more flexible way to retrieve data.
-    # For now, only 1 attribute can be matched at a time.
     def get_product(self, attr: str, value=None) -> list:
         """
         Method to get the first product that has a matching attribute value.
