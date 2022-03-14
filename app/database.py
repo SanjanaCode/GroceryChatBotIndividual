@@ -42,23 +42,23 @@ class SQLException(Exception):
     """
     pass
 class SQLiteDatabase:
-    """
-    Class to interact with the database.
+    """Class to interact with the database.
     """
 
     def __init__(self, type: DatabaseType, **kwargs):
         # Initialize the information for the database
         self.database_config = ":memory:" if type is DatabaseType.MEMORY else os.path.join(
             os.getcwd(), "mock.db")
+        self.conn = None
 
     def init_database(self):
         """
         Initialize the database.
         """
         if not self.conn:
-            return
+            raise SQLException("Connection is not initialized yet!")
 
-        # Create the table
+        # Create the table for product information
         create_table_sql = """
             CREATE TABLE product (
                 id CHAR(4) PRIMARY KEY,
@@ -88,6 +88,7 @@ class SQLiteDatabase:
         Close the connection to the database.
         """
         self.conn.close()
+        self.conn = None
 
     def execute_query(self, query):
         """
