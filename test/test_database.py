@@ -55,7 +55,7 @@ class TestSQLiteDatabase:
     @pytest.fixture()
     def db(self):
         # Set up
-        db = SQLiteDatabase(DatabaseType.MEMORY)
+        db = SQLiteDatabase.instance()
         db.connect()
         db.init_database()
 
