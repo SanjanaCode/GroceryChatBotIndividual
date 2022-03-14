@@ -121,6 +121,8 @@ class SQLiteDatabase:
     def close(self):
         """Close the connection to the database.
         """
+        if not self.conn:
+            raise SQLException("Connection must be open first!")
         self.conn.close()
         self.conn = None
 
@@ -132,6 +134,8 @@ class SQLiteDatabase:
         query: str
             The select query to execute.
         """
+        if not self.conn:
+            raise SQLException("Connection is not initialized yet!")
         return self.conn.cursor().execute(query)
 
     def execute_update(self, update_query):
@@ -142,6 +146,8 @@ class SQLiteDatabase:
         update_query: str
             The update query to execute.
         """
+        if not self.conn:
+            raise SQLException("Connection is not initialized yet!")
         return self.conn.cursor().execute(update_query)
 
     def get_product(self, attr: str, value=None) -> list:
@@ -165,6 +171,8 @@ class SQLiteDatabase:
         product: dict
             The information about the product.
         """
+        if not self.conn:
+            raise SQLException("Connection is not initialized yet!")
 
         # Define a list
         products = []
@@ -211,6 +219,8 @@ class SQLiteDatabase:
         status: boolean
             Whether the request is resolved.
         """
+        if not self.conn:
+            raise SQLException("Connection is not initialized yet!")
         insert_sql = f"INSERT INTO concerns (session_id, phone_num, desc, date_created, status) VALUES ('{session_id}', '{phone_num}', '{desc}', datetime('now'), {1 if status else 0});"
         self.execute_update(insert_sql)
     
