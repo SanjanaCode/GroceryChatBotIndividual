@@ -74,6 +74,12 @@ class SQLiteDatabase:
         if not self.conn:
             raise SQLException("Connection is not initialized yet!")
 
+        # Drop tables if exists
+        drop_table = "DROP TABLE IF EXISTS product;"
+        self.execute_update(drop_table)
+        drop_table = "DROP TABLE IF EXISTS concerns;"
+        self.execute_update(drop_table)
+
         # Create the table for product information
         create_table_sql = """
             CREATE TABLE product (
