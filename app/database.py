@@ -3,6 +3,7 @@ import sqlite3
 import os
 from enum import Enum, unique
 from collections import OrderedDict
+from app.error import SQLException
 
 # Add data as needed
 MOCK_PRODUCT_DATA = [
@@ -37,10 +38,6 @@ class DatabaseType(Enum):
     MEMORY = 0
     DATAFILE = 1
 
-class SQLException(Exception):
-    """Raise when there is an error in executing an SQL statement.
-    """
-    pass
 class SQLiteDatabase:
     """Class to interact with the database.
     """
