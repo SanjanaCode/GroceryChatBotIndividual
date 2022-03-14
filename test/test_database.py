@@ -118,25 +118,10 @@ class TestSQLiteDatabase:
         # Checking
         assert result_str == expected_str
 
-
-@pytest.mark.database
-class TestSQLiteOnHandler:
-
-    @pytest.fixture()
-    def mini_bot(self):
-        # Set up
-        mini_bot = ProductInfoHandler()
-
-        # Run tests
-        yield mini_bot
-
-        # Clean up
-        mini_bot.dispose()
-
-    # Test get_product method on ProductInfoHandler
-    def test_get_product(self, mini_bot: ProductInfoHandler):
+    # Test select a product base on id
+    def test_get_product(self, db: SQLiteDatabase):
         # Make a sample request for record with id 4011
-        list_prod = mini_bot.db.get_product("id", "4011")
+        list_prod = db.get_product("id", "4011")
 
         # Extract product
         return_prod = list_prod[0] if len(list_prod) > 0 else None
