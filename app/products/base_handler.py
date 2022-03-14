@@ -42,7 +42,7 @@ class BaseHandler:
 
         # Initialize a mock database if development environment
         if self.runtime_mode == "DEV":
-            self.db = SQLiteDatabase(DatabaseType.MEMORY)
+            self.db = SQLiteDatabase.instance()
             self.db.connect()  # Start a connection
             self.db.init_database()  # Initialize the database
         else:
