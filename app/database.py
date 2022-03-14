@@ -194,18 +194,27 @@ class SQLiteDatabase:
         status: boolean
             Whether the request is resolved.
         """
-        insert_sql = f"INSERT INTO concerns (session_id, phone_num, desc, date_created, status) VALUES ({session_id}, {phone_num}, {desc}, datetime('now'), {status});"
+        insert_sql = f"INSERT INTO concerns (session_id, phone_num, desc, date_created, status) VALUES ('{session_id}', '{phone_num}', '{desc}', datetime('now'), {1 if status else 0});"
         self.execute_update(insert_sql)
     
 def main():
     db = SQLiteDatabase(DatabaseType.MEMORY)
     db.connect()
     db.init_database()
-    cursor = db.execute_query("SELECT * FROM product")
-    for row in cursor:
-        print(row)
-    db.close()
 
+    def print_result(cursor):
+        print(tuple([desc[0] for desc in cursor.description])) # Print column names
+        cursor.description
+        for row in cursor:
+            print(row)
+
+    # Checking product info
+    print_result(cursor=db.execute_query("SELECT * FROM product"))
+    print("\n-------------------\n")
+    # Checking complains info
+    db.save_concern(session_id="ABC123DEF0", phone_num="1234567890", desc="Something is wrong", status = True)
+    print_result(cursor=db.execute_query("SELECT * FROM concerns"))
+    db.close()
 
 # Use for testing
 if __name__ == "__main__":
