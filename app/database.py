@@ -1,4 +1,5 @@
 
+from __future__ import annotations
 import sqlite3
 import os
 from enum import Enum, unique
@@ -42,6 +43,25 @@ class SQLiteDatabase:
     """Class to interact with the database.
     """
 
+    # Static field to hold the singly-defined instance
+    __cached = dict()
+
+    @staticmethod
+    def instance(type = DatabaseType.MEMORY) -> SQLiteDatabase:
+        """Get the predefined instance of SQLiteDatabase (either memory or datafile).
+
+        Parameters
+        ----------
+        type: DatabaseType 
+            Specify which type of database to retrieve. Default: MEMORY.
+
+        Returns
+        --------
+        instance: DatabaseType
+            An instance of SQLiteDatabase with the specified type.
+        """
+        return SQLiteDatabase.__cached.setdefault(type, SQLiteDatabase(type=type))
+
     def __init__(self, type: DatabaseType, **kwargs):
         # Initialize the information for the database
         self.database_config = ":memory:" if type is DatabaseType.MEMORY else os.path.join(
@@ -49,8 +69,7 @@ class SQLiteDatabase:
         self.conn = None
 
     def init_database(self):
-        """
-        Initialize the database.
+        """Initialize the database.
         """
         if not self.conn:
             raise SQLException("Connection is not initialized yet!")
@@ -94,15 +113,13 @@ class SQLiteDatabase:
         self.conn = sqlite3.connect(self.database_config)
 
     def close(self):
-        """
-        Close the connection to the database.
+        """Close the connection to the database.
         """
         self.conn.close()
         self.conn = None
 
     def execute_query(self, query):
-        """
-        Execute a select query.
+        """Execute a select query.
 
         Parameters
         ----------
@@ -112,8 +129,7 @@ class SQLiteDatabase:
         return self.conn.cursor().execute(query)
 
     def execute_update(self, update_query):
-        """
-        Execute an update query.
+        """Execute an update query.
 
         Parameters
         ----------
@@ -123,8 +139,7 @@ class SQLiteDatabase:
         return self.conn.cursor().execute(update_query)
 
     def get_product(self, attr: str, value=None) -> list:
-        """
-        Method to get the first product that has a matching attribute value.
+        """Method to get the first product that has a matching attribute value.
 
         This is equivalent to SELECT * WHERE attr = value.
 
@@ -173,8 +188,7 @@ class SQLiteDatabase:
         return products
 
     def save_concern(self, session_id, phone_num, desc, status=False):
-        """
-        Method to save concern request into the database.
+        """Method to save concern request into the database.
 
         Parameters
         ----------
@@ -195,7 +209,7 @@ class SQLiteDatabase:
         self.execute_update(insert_sql)
     
 def main():
-    db = SQLiteDatabase(DatabaseType.MEMORY)
+    db = SQLiteDatabase.instance()
     db.connect()
     db.init_database()
 
@@ -211,6 +225,10 @@ def main():
     # Checking complains info
     db.save_concern(session_id="ABC123DEF0", phone_num="1234567890", desc="Something is wrong", status = True)
     print_result(cursor=db.execute_query("SELECT * FROM concerns"))
+
+    print("\n-------------------\n")
+    # Check if calling instance() again returns the same instance
+    print(f"Checking SQLiteDatabase.instance() == SQLiteDatabase.instance(): {db is SQLiteDatabase.instance()}\n")
     db.close()
 
 # Use for testing
