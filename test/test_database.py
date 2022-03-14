@@ -77,6 +77,11 @@ class TestSQLiteDatabase:
         # Close the connection
         db.close()
 
+    # Test if singleton pattern is correctly implemented
+    # The object db is default to be in memory.
+    def test_get_instance(self, db: SQLiteDatabase):
+        assert db == SQLiteDatabase.instance()
+
     # Test database initialization
     def test_init_database(self, db: SQLiteDatabase):
         # Get the cursor
