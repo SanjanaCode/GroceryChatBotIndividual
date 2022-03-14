@@ -47,6 +47,16 @@ class ConvertUtilities:
         else:
             return ""
 
+    # Utility method to convert a set of metadata to string
+    @staticmethod
+    def metadata_to_str(schema):
+        buffer = [] # A string buffer
+        for table in schema:
+            inner_buffer = []
+            for metadata in table:
+                inner_buffer.append(str(metadata))
+            buffer.append(",".join(inner_buffer))
+        return "\n".join(buffer)
 
 @pytest.mark.database
 class TestSQLiteDatabase:
@@ -66,6 +76,18 @@ class TestSQLiteDatabase:
         # Teadown
         # Close the connection
         db.close()
+
+    # Test database initialization
+    def test_init_database(self, db: SQLiteDatabase):
+        # Get the cursor
+        cursor = db.execute_query("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;")
+        
+        # Parse the result set to string
+        result_str = ConvertUtilities.metadata_to_str(cursor)
+        expected_str = "concerns\nproduct\nsqlite_sequence"
+
+        # Checking
+        assert result_str == expected_str
 
     # Test select all with databse in memory
     def test_get_all_products_memory(self, db: SQLiteDatabase):
