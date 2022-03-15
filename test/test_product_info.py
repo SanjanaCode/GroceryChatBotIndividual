@@ -30,6 +30,18 @@ class TestProductInfo:
         expectedOutput = "{} are out of stock.".format(MOCK_PRODUCT_DATA[3]["names"].capitalize())
         assert(classTest.handle(message) == expectedOutput)
 
+    def test_intent_pricebread(self, classTest):
+        product_name = "bread"
+        intent = "product-price"
+        expectedOutput = "%s cost $%s %s." % (MOCK_PRODUCT_DATA[4]["names"].capitalize(), MOCK_PRODUCT_DATA[4]["price"], MOCK_PRODUCT_DATA[4]["price_scale"])
+        assert(classTest.handle(product_name, intent) == expectedOutput)
+
+    def test_intent_stockbanana(self, classTest):
+        product_name = "banana"
+        intent = "product-stock"
+        expectedOutput = "{} are in stock.".format(MOCK_PRODUCT_DATA[0]["names"].capitalize())
+        assert(classTest.handle(product_name, intent) == expectedOutput)
+
 @pytest.mark.prod_info
 class TestNutritionInfo:
     @pytest.fixture
@@ -65,5 +77,11 @@ class TestNutritionInfo:
             pytest.fail("Expected exception not raised")
         except Exception as e:
             assert(str(e) == "list index out of range") # no item specified in the message
+    
+    def test_intent_nutrition_bread(self, classTest):
+        product_name = "bread"
+        intent = "product-nutrition"
+        expectedOutput = "%s Nutrition Facts: Calories = %s, Protein = %s, Carbs = %s, Sugar = %s, Fat = %s." % (MOCK_PRODUCT_DATA[4]["name"].capitalize(), MOCK_PRODUCT_DATA[4]["calories"], MOCK_PRODUCT_DATA[4]["protein"], MOCK_PRODUCT_DATA[4]["carbs"], MOCK_PRODUCT_DATA[4]["sugar"], MOCK_PRODUCT_DATA[4]["fat"])
+        assert(classTest.handle(product_name, intent) == expectedOutput)
 
     
