@@ -12,6 +12,20 @@ from app.concerns.other_concern import *
 import random
 import sys
 class Bot:
+    """
+    This the main bot class that handles conversation with users.
+
+    Parameters: None
+
+    Attributes: 
+        project_id: google project id of the agent
+        session_id: unique session id for each conversation
+        session_client: session client object for dialogflow
+        language_code: language code for dialogflow, initially set to en-US
+        session: session path for dialogflow
+        intents: dictionary of current intents the bot handles
+        undetected_intent_count: keep track of times the intent is not detected
+    """
     def __init__(self):
         # project_id = "grocery-chat-bot"
         project_id = "grocery-chat-bot-test-def-qvwt"
@@ -23,12 +37,18 @@ class Bot:
         self.session_client = dialogflow.SessionsClient()
         self.language_code = "en-US"
         self.session = self.session_client.session_path(project_id, self.session_id)
-        #current intents the bot handle
         self.intents = {}
-        #keep track of times the intent is not detected
         self.undetected_intent_count = 0
 
     def start_conversation(self):
+        """
+        Initiate conversation with user and maintain the conversation until user says bye.
+        For each user input, detect intent and route to appropriate handler.
+
+        Parameters: None
+
+        Returns: None
+        """
         print("""Bot: Hello, welcome to the official chatbot of Walmart. \nHere you can find information about our store, products \nand resolve any further concerns you have. \nHow can I help you today?""")
         #continuously take in user input (or maintain the conversation) 
         #until the user ends
@@ -85,6 +105,16 @@ class Bot:
             print("Bot: What else can I help you?")   
     
     def detect_intent_texts(self,text):
+        """
+        Takes user input and makes a request to dialogflow api to detect intent.
+
+        Parameters:
+            text: user input
+
+        Returns: query_result from json object received from dialogflow
+
+        Raises: exception with text "Dialogflow API error" if cannot connect to dialogflow
+        """
         try:
             # Process text_input
             text_input = dialogflow.TextInput(text=text, language_code=self.language_code)
@@ -100,6 +130,17 @@ class Bot:
 
     #Based on intent, route to appropriate handler and return response for user input.
     def route_to_handler(self, **kwargs):
+        """
+        Takes intent name and necessary parameters and routes to appropriate handler.
+        Handlers include: product-info, store-info, other-concerns.
+
+        Parameters:
+            intent: name of intent
+            productName: name of product. Only required if intent is about product
+            user_input: user input. Only required if intent is about store
+        
+        Returns: text response from handlers
+        """
         #If the question is about (detected intent) product info, direct it to the product information handler. Handler returns a response to user question. 
         #If the intent is not currently handled by the bot, create a new intent for it.
         if("product" in kwargs["intent"]):
