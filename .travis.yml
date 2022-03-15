@@ -19,7 +19,7 @@ jobs:
     - choco install python --version 3.8.0
     - python -m pip install --upgrade pip
     env: 
-    - GOOGLE_APPLICATION_CREDENTIALS=env/dialogflow_key.json
+    - GOOGLE_APPLICATION_CREDENTIALS=dialogflow_key.json
     - PATH=/c/Python38:/c/Python38/Scripts:$PATH
 before_install:
 - openssl aes-256-cbc -K $encrypted_76dee02f3458_key -iv $encrypted_76dee02f3458_iv
