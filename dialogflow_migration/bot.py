@@ -66,7 +66,7 @@ class Bot:
         if("product" in kwargs["intent"]):
             if("product-info" not in self.intents):
                 self.intents["product-info"] = ProductInfoHandler()
-            response = self.intents["product-info"].handle(kwargs["user_input"], kwargs["productName"], kwargs["intent"])
+            response = self.intents["product-info"].handle(kwargs["productName"], kwargs["intent"])
 
         #If the question is about (detected intent) product info, direct it to the product information handler. Handler returns a response to user question. 
         elif("store" in kwargs["intent"]):

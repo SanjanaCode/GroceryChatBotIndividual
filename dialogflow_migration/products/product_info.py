@@ -9,5 +9,4 @@ class ProductInfoHandler(BaseHandler):
         Handle by product minibot
         Product name: {productName}
         Intent: {intent}
-        User input: {user_input}
         '''

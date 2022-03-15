@@ -8,5 +8,4 @@ class StoreInfoHandler(BaseHandler):
         return f'''
         Handle by store minibot
         Intent: {intent}
-        User input: {user_input}
         '''
