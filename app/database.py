@@ -103,10 +103,9 @@ class Database:
         # Insert sample product information
 
         for prod in MOCK_PRODUCT_DATA:
-            insert_sql = f"""
-            INSERT INTO product VALUES ("{prod['id']}", "{prod['name']}", "{prod['names']}", {prod['price']}, "{prod['price_scale']}", {prod['in_stock']});
-            """
-            self.execute_update(insert_sql)
+            insert_data = tuple([prod['id'], prod['name'], prod['names'], prod['price'], prod['price_scale'], prod['in_stock']])
+            insert_sql = "INSERT INTO product VALUES (?, ?, ?, ?, ?, ?);"
+            self.execute_update(insert_sql, insert_data)
         self.conn.commit()
 
         # Create a table for concerns/complaints
@@ -145,17 +144,21 @@ class Database:
             raise SQLException("Connection is not initialized yet!")
         return self.conn.cursor().execute(query)
 
-    def execute_update(self, update_query):
+    def execute_update(self, update_query, params=None):
         """Execute an update query.
 
         Parameters
         ----------
         update_query: str
             The update query to execute.
+
+        params: tuple
+            The parameters to be used in the update query.
         """
         if not self.conn:
             raise SQLException("Connection is not initialized yet!")
-        return self.conn.cursor().execute(update_query)
+        cursor = self.conn.cursor()
+        return cursor.execute(update_query, params) if params else cursor.execute(update_query)
 
     def get_product(self, attr: str, value=None) -> list:
         """Method to get the first product that has a matching attribute value.
