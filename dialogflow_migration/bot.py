@@ -72,5 +72,5 @@ class Bot:
         elif("store" in kwargs["intent"]):
             if("store-info" not in self.intents):
                 self.intents["store-info"] = StoreInfoHandler()
-            response = self.intents["store-info"].handle(kwargs["user_input"], kwargs["intent"])
+            response = self.intents["store-info"].handle(kwargs["user_input"])
         return response
