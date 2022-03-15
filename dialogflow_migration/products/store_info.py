@@ -4,8 +4,7 @@ import re
 
 
 class StoreInfoHandler(BaseHandler):
-    def handle(self, user_input, intent):
+    def handle(self, user_input):
         return f'''
         Handle by store minibot
-        Intent: {intent}
         '''
