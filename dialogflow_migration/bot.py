@@ -21,41 +21,21 @@ class Bot:
         self.undetected_intent_count = 0
 
     def start_conversation(self):
-        print("""Bot: Hello, welcome to the official chatbot of Walmart. \nHere you can find information about our store, products \nand resolve any further concerns you have. \nHow can I help you today?""")
-        #continuously take in user input (or maintain the conversation) 
-        #until the user ends
         while True:
             user_input = input("You: ")
-            #if user input is empty, prompt the input again
-            if(not user_input):
-                print("Bot: How can I help you?")
-                continue
-            #call dialogflow API to detect intent. If there is error, stop the program
             try:
                 response = self.detect_intent_texts(user_input)
             except:
                 print("Bot: There is an error on our end. Please try again later.")
                 sys.exit()
             intent = response.intent.display_name     
-            # if user greets (such as "hello"), then greet the user
-            if(intent == "Default Welcome Intent" or intent == "product-info"):
-                print("Bot: " + response.fulfillment_text)
-                continue
-            # if user ends the converastion (such as "bye"), 
-            # then end the conversation
-            elif(intent == "Done-conversation"):
-                print("Bot: Such a great pleasure to help you. Have a great day!")
-                sys.exit()
-            # if user asks about product, 
-            # pass to product-info in route_to_handle. 
-            # Set the undetected intent count to 0
-            elif(intent == "product-price" or intent == "product-stock" or intent == "product-nutrition"):
+            if(intent == "product-price" or intent == "product-stock" or intent == "product-nutrition"):
                 productName = response.parameters["product-name"]
                 print("json object")
                 print("{")
                 print(response)
                 print("}")
-                print("Bot: " + self.route_to_handler(productName = productName, intent = intent, user_input = user_input))
+                print("Bot: " + self.route_to_handler(productName = productName, intent = intent))
                 self.undetected_intent_count = 0
             # if user asks about store, 
             # pass to store-info in route_to_handle. 
@@ -63,23 +43,7 @@ class Bot:
             elif(intent == "store-info"):
                 print("Bot: " + self.route_to_handler(intent = intent, user_input = user_input))
                 self.undetected_intent_count = 0
-            # if user asks for refund, 
-            # direct to other concerns handler in route_to_handle
-            elif(intent == "refund-request"):
-                    print("Bot: " + response.fulfillment_text)
-                    self.route_to_handler("other-concerns", user_input)
-            # if intent can not be detected, increment times like this
-            # if more than 3 times intent can't be detected, direct to other concerns handler
-            else:    
-                self.undetected_intent_count += 1
-                if(self.undetected_intent_count == 3):
-                    self.route_to_handler("other-concerns", user_input)
-                    self.undetected_intent_count = 0
-                else:
-                    print("Bot: " + response.fulfillment_text)
-                    continue
-            # continue the conversation
-            print("Bot: What else can I help you?")   
+            
     
     def detect_intent_texts(self,text):
         try:
@@ -109,10 +73,4 @@ class Bot:
             if("store-info" not in self.intents):
                 self.intents["store-info"] = StoreInfoHandler()
             response = self.intents["store-info"].handle(kwargs["user_input"], kwargs["intent"])
-
-        #If intent cannot be detected or customer has further concerns, direct it to the other concerns handler. Handler returns a response to user question.
-        else:
-            if("other-concerns" not in self.intents):     
-                self.intents["other-concerns"] = OtherConcerns() 
-            response = self.intents["other-concerns"].handle()
         return response

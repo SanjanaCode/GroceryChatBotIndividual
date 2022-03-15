@@ -4,7 +4,7 @@ from app.products.base_handler import BaseHandler
 
 
 class ProductInfoHandler(BaseHandler):
-    def handle(self, user_input, productName, intent):
+    def handle(self, productName, intent):
         return f'''
         Handle by product minibot
         Product name: {productName}
