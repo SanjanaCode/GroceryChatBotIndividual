@@ -22,7 +22,24 @@ class ProductInfoHandler(BaseHandler):
     def dispose(self):
         super().dispose()
 
-    def handle(self, message: str) -> str:
+    def handle_prod_intent(self, product: str, intent: str) -> str:
+
+        request = None
+
+        for prod in MOCK_PRODUCT_DATA:
+            if product in prod["name"] or product in prod["names"]:
+                request = {"request": intent, "id": prod["id"]}
+                break
+
+        if not request:
+            return None
+
+        return self.handle_product_info(None, **request)
+
+    def handle(self, message: str, intent=None) -> str: # if 2 args => message = product_name
+        if intent is not None:
+            return self.handle_prod_intent(message, intent)
+
         # Call parser
         kwargs = self.parse(message=message)
 
