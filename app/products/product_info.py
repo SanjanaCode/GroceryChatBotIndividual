@@ -23,6 +23,8 @@ class ProductInfoHandler(BaseHandler):
         super().dispose()
 
     def handle_prod_intent(self, product: str, intent: str) -> str:
+        
+        intent = intent[8:] # hardcoded to filter intent: product-<intent> Ex. product-price -> intent = price
 
         request = None
 
