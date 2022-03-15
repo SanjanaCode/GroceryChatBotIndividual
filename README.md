@@ -103,7 +103,6 @@ From this bot you can query the store's information.
 `Example import for product info bot:`
 ```console
 from app.products.store_info import StoreInfoHandler
-from app.products.database import STORE_INFO
 ```
 
 `handle(string) -> string`
@@ -129,7 +128,6 @@ From this bot you can query the store's products information.
 `Example import for product info bot:`
 ```console
 from app.products.product_info import ProductInfoHandler
-from app.products.database import STORE_INFO
 ```
 
 `handle(string) -> string`
@@ -191,3 +189,20 @@ With spelling mistakes handled by Google's Diagflow API, the bot will provide a 
 
 ![correcttion-snippet](snippets/correction.png)
 
+### Synonym Recognition
+
+With synonym recognition handled by Google's Diagflow API, the bot will provide a more accurate response to the user.
+
+![correcttion-snippet](snippets/synonym.png)
+
+### Named Entity Recognition
+
+With Named Entity Recognition handled by Google's Diagflow API, the bot will provide a more accurate response to the user.
+
+![correcttion-snippet](snippets/entity.png)
+
+### Sentiment Analysis
+
+With Sentiment Analysis handled by Google's Diagflow API, the bot will provide a more accurate response to the user.
+
+![correcttion-snippet](snippets/sentiment.png)
