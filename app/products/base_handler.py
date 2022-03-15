@@ -1,6 +1,6 @@
 from abc import abstractmethod
 import os
-from app.database import DatabaseType, SQLiteDatabase
+from app.database import DatabaseType, Database
 
 
 class BaseHandler:
@@ -42,7 +42,7 @@ class BaseHandler:
 
         # Initialize a mock database if development environment
         if self.runtime_mode == "DEV":
-            self.db = SQLiteDatabase.instance()
+            self.db = Database.instance()
             self.db.connect()  # Start a connection
             self.db.init_database()  # Initialize the database
         else:

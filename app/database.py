@@ -38,18 +38,20 @@ STORE_INFO = {
 
 @unique
 class DatabaseType(Enum):
-    MEMORY = 0
-    DATAFILE = 1
+    SQLITE_MEMORY = 0
+    SQLITE_DATAFILE = 1
+    # TODO: Adding connection to other relational databases
 
-class SQLiteDatabase:
-    """Class to interact with the database.
+class Database:
+    """Class to connect to the database of the specified type.
+    Currently supporting SQlite.
     """
 
     # Static field to hold the singly-defined instance
     __cached = dict()
 
     @staticmethod
-    def instance(type = DatabaseType.MEMORY) -> SQLiteDatabase:
+    def instance(type = DatabaseType.SQLITE_MEMORY) -> Database:
         """Get the predefined instance of SQLiteDatabase (either memory or datafile).
 
         Parameters
@@ -62,12 +64,15 @@ class SQLiteDatabase:
         instance: DatabaseType
             An instance of SQLiteDatabase with the specified type.
         """
-        return SQLiteDatabase.__cached.setdefault(type, SQLiteDatabase(type=type))
+        return Database.__cached.setdefault(type, Database(type=type))
 
     def __init__(self, type: DatabaseType, **kwargs):
         # Initialize the information for the database
-        self.database_config = ":memory:" if type is DatabaseType.MEMORY else os.path.join(
-            os.getcwd(), "mock.db")
+        self.database_config = None
+        if type is DatabaseType.SQLITE_MEMORY:
+            self.database_config = ":memory:"
+        elif type is DatabaseType.SQLITE_DATAFILE:
+            self.database_config = os.path.join(os.getcwd(), "mock.db")
         self.conn = None
 
     def init_database(self):
@@ -241,7 +246,7 @@ class PrintUtility:
             print(table)
 
 def main():
-    db = SQLiteDatabase.instance()
+    db = Database.instance()
     db.connect()
     db.init_database()
     # Checking table metata
@@ -267,7 +272,7 @@ def main():
     print("\n-------------------\n")
 
     # Check if calling instance() again returns the same instance
-    print(f"Checking SQLiteDatabase.instance() == SQLiteDatabase.instance(): {db is SQLiteDatabase.instance()}\n")
+    print(f"Checking SQLiteDatabase.instance() == SQLiteDatabase.instance(): {db is Database.instance()}\n")
 
     # Clean up
     db.close()

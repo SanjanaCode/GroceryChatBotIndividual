@@ -1,5 +1,5 @@
 import pytest
-from app.database import MOCK_PRODUCT_DATA, SQLiteDatabase, DatabaseType
+from app.database import MOCK_PRODUCT_DATA, Database, DatabaseType
 from app.products.product_info import ProductInfoHandler
 from datetime import datetime, timezone
 
@@ -59,14 +59,14 @@ class ConvertUtilities:
         return "\n".join(buffer)
 
 @pytest.mark.database
-class TestSQLiteDatabase:
+class TestDatabase:
 
     # This will run for all tests defined in this module
     # Scope: function (run all test functions)
     @pytest.fixture()
     def db(self):
         # Set up
-        db = SQLiteDatabase.instance()
+        db = Database.instance()
         db.connect()
         db.init_database()
 
@@ -80,11 +80,11 @@ class TestSQLiteDatabase:
 
     # Test if singleton pattern is correctly implemented
     # The object db is default to be in memory.
-    def test_get_instance(self, db: SQLiteDatabase):
-        assert db == SQLiteDatabase.instance()
+    def test_get_instance(self, db: Database):
+        assert db == Database.instance()
 
     # Test database initialization
-    def test_init_database(self, db: SQLiteDatabase):
+    def test_init_database(self, db: Database):
         # Get the cursor
         cursor = db.execute_query("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;")
         
@@ -96,7 +96,7 @@ class TestSQLiteDatabase:
         assert result_str == expected_str
 
     # Test select all with databse in memory
-    def test_get_all_products_memory(self, db: SQLiteDatabase):
+    def test_get_all_products_memory(self, db: Database):
         # Get the cursor
         cursor = db.execute_query("SELECT * FROM product;")
 
@@ -108,7 +108,7 @@ class TestSQLiteDatabase:
         assert result_str == expected_str
 
     # Test select all with database as a data file
-    def test_get_all_products_datafile(self, db: SQLiteDatabase):
+    def test_get_all_products_datafile(self, db: Database):
         # Get the cursor
         cursor = db.execute_query("SELECT * FROM product;")
 
@@ -120,7 +120,7 @@ class TestSQLiteDatabase:
         assert result_str == expected_str
 
     # Test select a product base on id
-    def test_get_product(self, db: SQLiteDatabase):
+    def test_get_product(self, db: Database):
         # Make a sample request for record with id 4011
         list_prod = db.get_product("id", "4011")
 
@@ -139,7 +139,7 @@ class TestSQLiteDatabase:
             return_prod) == ConvertUtilities.record_to_str(expect_prod)
  
     # Test save a complain into the database
-    def test_save_concern(self, db: SQLiteDatabase):
+    def test_save_concern(self, db: Database):
         # Get the information
         current_time = datetime.now(timezone.utc).isoformat(sep=" ", timespec="seconds")
         current_time = current_time[0: current_time.index("+")] # Remove timezone offset
