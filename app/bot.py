@@ -91,6 +91,7 @@ class Bot:
             # direct to other concerns handler in route_to_handle
             elif(intent == "refund-request"):
                     self.route_to_handler("other-concerns", user_input)
+                    self.undetected_intent_count = 0
             # if intent can not be detected, increment times like this
             # if more than 3 times intent can't be detected, direct to other concerns handler
             else:    
