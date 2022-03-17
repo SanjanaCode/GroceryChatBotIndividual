@@ -1,6 +1,7 @@
 # Other Concerns
 
 ## Methods
+
 The `OtherConcerns` class has three methods:
 
 1. `handle()`:Is the principal methods which calls methods that handle returns and exchanges, any other questions that are not related to store or product information, or when the bot does not understand what the user types. It also analyzes the sentiment score from the dialogflow api and outputs a response according to whether the user's text denotes a positive or negative sentiment (sentiment classification).
