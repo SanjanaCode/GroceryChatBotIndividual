@@ -231,8 +231,8 @@ class Database:
         """
         if not self.conn:
             raise SQLException("Connection is not initialized yet!")
-        insert_sql = f"INSERT INTO concerns (session_id, phone_num, desc, date_created, status) VALUES ('{session_id}', '{phone_num}', '{desc}', '{datetime}', {1 if status else 0});"
-        self.execute_update(insert_sql)
+        insert_sql = f"INSERT INTO concerns (session_id, phone_num, desc, date_created, status) VALUES (?, ?, ?, ?, ?);"
+        self.execute_update(insert_sql, tuple([session_id, phone_num, desc, datetime, status]))
 
 
 class PrintUtility:
