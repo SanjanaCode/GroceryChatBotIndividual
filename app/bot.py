@@ -27,8 +27,8 @@ class Bot:
         undetected_intent_count: keep track of times the intent is not detected
     """
     def __init__(self):
-        # project_id = "grocery-chat-bot"
-        project_id = "grocery-chat-bot-test-def-qvwt"
+        project_id = "grocery-chat-bot"
+        # project_id = "grocery-chat-bot-test-def-qvwt"
         #generate unique session id for each conversation. 
         # Session id is for continuation of conversation
         #TODO: create unique number
@@ -87,21 +87,17 @@ class Bot:
             elif(intent == "store-info"):
                 print("Bot: " + self.route_to_handler(intent = intent, user_input = user_input))
                 self.undetected_intent_count = 0
-            # if user asks for refund, 
+            # if user asks for refund or if bot has not understood the user intent more than 3 times, 
             # direct to other concerns handler in route_to_handle
-            elif(intent == "refund-request"):
-                    self.route_to_handler("other-concerns", user_input)
+            elif(intent == "exchange-request" or intent == "refund-request" or self.undetected_intent_count == 3):
+                    self.route_to_handler(sentimentScore = response.sentiment_analysis_result.query_text_sentiment.score, intent = intent)
                     self.undetected_intent_count = 0
-            # if intent can not be detected, increment times like this
-            # if more than 3 times intent can't be detected, direct to other concerns handler
+            # if the bot doesn't understand the user intent, 
+            # ask again and increment the undetected intent count                    
             else:    
                 self.undetected_intent_count += 1
-                if(self.undetected_intent_count == 3):
-                    self.route_to_handler("other-concerns", user_input)
-                    self.undetected_intent_count = 0
-                else:
-                    print("Bot: " + response.fulfillment_text)
-                    continue
+                print("Bot: " + response.fulfillment_text)
+                continue
             # continue the conversation
             print("Bot: What else can I help you?")   
     
@@ -159,5 +155,5 @@ class Bot:
         else:
             if("other-concerns" not in self.intents):     
                 self.intents["other-concerns"] = OtherConcerns() 
-            response = self.intents["other-concerns"].handle()
+            response = self.intents["other-concerns"].handle(kwargs["sentimentScore"], kwargs["intent"])
         return response
