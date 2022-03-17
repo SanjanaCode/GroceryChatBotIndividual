@@ -23,6 +23,7 @@ class OtherConcerns:
         elif(intent=="refund-request"):
             self.handleRefunds()
         #For any other concerns or when the bot is unable to understand what the customer is saying:
+
         else:
             #Ask user if they would want to visit store
             print("Bot: Would you like to visit our store to resolve your concerns?")
