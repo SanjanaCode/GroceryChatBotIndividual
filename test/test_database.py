@@ -86,7 +86,7 @@ class TestDatabase:
     # Test database initialization
     def test_init_database(self, db: Database):
         # Get the cursor
-        cursor = db.execute_query("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;")
+        cursor = db.execute_query("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;")
         
         # Parse the result set to string
         result_str = ConvertUtilities.metadata_to_str(cursor)
