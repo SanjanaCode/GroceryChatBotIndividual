@@ -151,12 +151,12 @@ The database API also allows queries straight from the database.
 
 `Example import for database:`
 ```console
-from app.products.database import SQLiteDatabase, DatabaseType
+from app.products.database import Database
 ```
 
 `Database lifecycle:`
 ```console
-db = SQLiteDatabase(DatabaseType.MEMORY)
+db = Database.instance()
 db.connect()
 db.init_database()
 # queries or methods
