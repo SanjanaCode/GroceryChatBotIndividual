@@ -1,7 +1,8 @@
 class OtherConcerns:
     """
-    This class contains methods that handle all questions that relate to other concerns about returns and refunds.
+    This class contains methods that handle all questions that relate to exchanges and refunds or any other questions that are not related to store or product information,.
     It also handles cases when the bot is unable to understand what the user types.
+    It analyzes the sentiment score from the dialogflow api and outputs a response according to whether the user's text denotes a positive or negative sentiment.
     Parameters: None
     Attributes: None
     """
