@@ -132,7 +132,7 @@ class Database:
         self.conn.close()
         self.conn = None
 
-    def execute_query(self, query):
+    def execute_query(self, query, params=None):
         """Execute a select query.
 
         Parameters
@@ -142,7 +142,7 @@ class Database:
         """
         if not self.conn:
             raise SQLException("Connection is not initialized yet!")
-        return self.conn.cursor().execute(query)
+        return self.conn.cursor().execute(query, params) if params else self.conn.cursor().execute(query)
 
     def execute_update(self, update_query, params=None):
         """Execute an update query.
@@ -188,10 +188,10 @@ class Database:
         products = []
 
         # Create a query statement
-        query = f"SELECT * FROM product WHERE {attr} = '{value}'"
+        query = f"SELECT * FROM product WHERE {attr} = ?;"
 
         # Execute the query
-        cursor = self.execute_query(query)
+        cursor = self.execute_query(query, tuple([value]))
 
         for row in cursor:
             # Create a dictionary representing a product
