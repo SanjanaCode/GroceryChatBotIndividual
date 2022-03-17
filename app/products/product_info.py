@@ -24,17 +24,16 @@ class ProductInfoHandler(BaseHandler):
 
     def handle_prod_intent(self, product: str, intent: str) -> str:
         
-        intent = intent[8:] # hardcoded to filter intent: product-<intent> Ex. product-price -> intent = price
+        intent = intent.split("-")[1] # hardcoded to filter intent: product-<intent> Ex. product-price -> intent = price
 
         request = None
 
-        for prod in MOCK_PRODUCT_DATA:
-            if product in prod["name"] or product in prod["names"]:
-                request = {"request": intent, "id": prod["id"]}
-                break
-
-        if not request:
+        cursor = self.db.execute_query(f"SELECT product.id FROM product WHERE product.name = '{product}' OR product.names = '{product}'")
+        data = cursor.fetchone()
+        if (not data):
             return None
+        
+        request = {"request": intent, "id": data[0]}
 
         return self.handle_product_info(None, **request)
 
