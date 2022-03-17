@@ -1,6 +1,6 @@
 class OtherConcerns:
     #method:return response for other concerns
-    def handle(self):
+    def handle(self, sentimentScore, intent):
         #Ask user if they would want to visit store
         print("Bot: Would you like to visit our store to resolve your concerns?")
         userInput = input("You: ").lower() 
