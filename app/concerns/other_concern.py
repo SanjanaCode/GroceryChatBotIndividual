@@ -1,13 +1,13 @@
 class OtherConcerns:
-    """
-    Handles responses for other concerns such as refunds, exchanges and anything that the bot does not understand.
-    parameters: 
-                sentimentNum - denotes whether the text from customer is a positive or negative sentiment.
-                intent - holds a string representing the intent detected.
-    returns: nothing
-    """
     
     def handle(self, sentimentNum, intent): 
+        """
+        Handles responses for other concerns such as refunds, exchanges and anything that the bot does not understand.
+        parameters: 
+                    sentimentNum - denotes whether the text from customer is a positive or negative sentiment.
+                    intent - holds a string representing the intent detected.
+        returns: nothing
+        """
         # If sentimentNum is a negative number then the text denotes a negative sentiment. 
         # If sentimentNum is a positive number then the text denotes a positive sentiment.
         # If sentimentNum is equal to zero, it's a neutral sentiment so print nothing.
@@ -46,19 +46,19 @@ class OtherConcerns:
                 else:
                     print("Bot: Here is our customer service number:416-555-1234\n You can contact this number and our customer service agents will assist you.")
 
-    """
-    Handles requests for exchanges
-    parameters: nothing
-    returns: nothing
-    """
     def handleExchange(self):
+        """
+        Handles requests for exchanges
+        parameters: nothing
+        returns: nothing
+        """
         print("Bot: You can exchange the product within 2 weeks (if perishable, then within 1-2 days) of purchase by visiting our store.\n Please ensure that: \n1. the product is unused \n2. the price tags are intact \n3. you bring the bill along with the product.")
 
-    """
-    Handles requests for refunds
-    parameters: nothing
-    returns: nothing
-    """
 
     def handleRefunds(self):
+        """
+        Handles requests for refunds
+        parameters: nothing
+        returns: nothing
+        """
         print("Bot: You can request for a refund or return in 2 ways:  1. place a request on our website(our agent will come to pick up the product) \n 2. directly visit our store\n Note that all requests for refunds or returns have to be made within 2 weeks of purchasing.\n After your refund/return is processed, the money will be refunded \n 1. To your original payment method (if paid by credit/debit card\n 2. As store credit")
