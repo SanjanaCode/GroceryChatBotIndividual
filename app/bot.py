@@ -1,16 +1,10 @@
 from google.cloud import dialogflow
-# actual package for handlers
-# from app.products.product_info import *
-# from app.products.store_info import *
-# from app.concerns.other_concern import *
-
-# test diaglogflow
-from dialogflow_migration.products.product_info import *
-from dialogflow_migration.products.store_info import *
+from app.products.product_info import *
+from app.products.store_info import *
 from app.concerns.other_concern import *
-
 import random
 import sys
+
 class Bot:
     """
     This the main bot class that handles conversation with users.
@@ -28,7 +22,6 @@ class Bot:
     """
     def __init__(self):
         project_id = "grocery-chat-bot"
-        # project_id = "grocery-chat-bot-test-def-qvwt"
         #generate unique session id for each conversation. 
         # Session id is for continuation of conversation
         #TODO: create unique number
