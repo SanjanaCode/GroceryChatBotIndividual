@@ -1,4 +1,4 @@
-from app.products.database import STORE_INFO
+from app.database import STORE_INFO
 from app.products.base_handler import BaseHandler
 import re
 
