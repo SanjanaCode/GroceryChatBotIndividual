@@ -1,12 +1,34 @@
 from google.cloud import dialogflow
-from app.products.product_info import *
-from app.products.store_info import *
+# actual package for handlers
+# from app.products.product_info import *
+# from app.products.store_info import *
+# from app.concerns.other_concern import *
+
+# test diaglogflow
+from dialogflow_migration.products.product_info import *
+from dialogflow_migration.products.store_info import *
 from app.concerns.other_concern import *
+
 import random
 import sys
 class Bot:
+    """
+    This the main bot class that handles conversation with users.
+
+    Parameters: None
+
+    Attributes: 
+        project_id: google project id of the agent
+        session_id: unique session id for each conversation
+        session_client: session client object for dialogflow
+        language_code: language code for dialogflow, initially set to en-US
+        session: session path for dialogflow
+        intents: dictionary of current intents the bot handles
+        undetected_intent_count: keep track of times the intent is not detected
+    """
     def __init__(self):
         project_id = "grocery-chat-bot"
+        # project_id = "grocery-chat-bot-test-def-qvwt"
         #generate unique session id for each conversation. 
         # Session id is for continuation of conversation
         #TODO: create unique number
@@ -15,12 +37,18 @@ class Bot:
         self.session_client = dialogflow.SessionsClient()
         self.language_code = "en-US"
         self.session = self.session_client.session_path(project_id, self.session_id)
-        #current intents the bot handle
         self.intents = {}
-        #keep track of times the intent is not detected
         self.undetected_intent_count = 0
 
     def start_conversation(self):
+        """
+        Initiate conversation with user and maintain the conversation until user says bye.
+        For each user input, detect intent and route to appropriate handler.
+
+        Parameters: None
+
+        Returns: None
+        """
         print("""Bot: Hello, welcome to the official chatbot of Walmart. \nHere you can find information about our store, products \nand resolve any further concerns you have. \nHow can I help you today?""")
         #continuously take in user input (or maintain the conversation) 
         #until the user ends
@@ -41,36 +69,49 @@ class Bot:
             if(intent == "Default Welcome Intent"):
                 print("Bot: " + response.fulfillment_text)
                 continue
-            # if user ends the converastion (such as "bye"), 
+            # if user ends the conversation (such as "bye"), 
             # then end the conversation
             elif(intent == "Done-conversation"):
                 print("Bot: Such a great pleasure to help you. Have a great day!")
                 sys.exit()
-            # if user asks about store, product, 
-            # pass to product-info, store-info in route_to_handle. 
+            # if user asks about product, 
+            # pass to store-info in route_to_handle. 
             # Set the undetected intent count to 0
-            elif(intent == "product-info" or intent == "store-info"):
-                print("Bot: " + self.route_to_handler(intent, user_input))
+            elif("product" in intent):# intent can be product-stock or product-nutrition or product-price
+                productName = response.parameters["product-name"]
+                print("Bot: " + self.route_to_handler(productName = productName, intent = intent))
                 self.undetected_intent_count = 0
-            # if user asks for refund, 
+            # if user asks about store, 
+            # pass to store-info in route_to_handle. 
+            # Set the undetected intent count to 0
+            elif(intent == "store-info"):
+                print("Bot: " + self.route_to_handler(intent = intent, user_input = user_input))
+                self.undetected_intent_count = 0
+            # if user asks for refund or if bot has not understood the user intent more than 3 times, 
             # direct to other concerns handler in route_to_handle
-            elif(intent == "refund-request"):
-                    print("Bot: " + response.fulfillment_text)
-                    self.route_to_handler("other-concerns", user_input)
-            # if intent can not be detected, increment times like this
-            # if more than 3 times intent can't be detected, direct to other concerns handler
+            elif(intent == "exchange-request" or intent == "refund-request" or self.undetected_intent_count == 3):
+                    self.route_to_handler(sentimentScore = response.sentiment_analysis_result.query_text_sentiment.score, intent = intent)
+                    self.undetected_intent_count = 0
+            # if the bot doesn't understand the user intent, 
+            # ask again and increment the undetected intent count                    
             else:    
                 self.undetected_intent_count += 1
-                if(self.undetected_intent_count == 3):
-                    self.route_to_handler("other-concerns", user_input)
-                    self.undetected_intent_count = 0
-                else:
-                    print("Bot: " + response.fulfillment_text)
-                    continue
+                print("Bot: " + response.fulfillment_text)
+                continue
             # continue the conversation
             print("Bot: What else can I help you?")   
     
     def detect_intent_texts(self,text):
+        """
+        Takes user input and makes a request to dialogflow api to detect intent.
+
+        Parameters:
+            text: user input
+
+        Returns: query_result from json object received from dialogflow
+
+        Raises: exception with text "Dialogflow API error" if cannot connect to dialogflow
+        """
         try:
             # Process text_input
             text_input = dialogflow.TextInput(text=text, language_code=self.language_code)
@@ -85,23 +126,34 @@ class Bot:
             raise Exception("Dialogflow API error")
 
     #Based on intent, route to appropriate handler and return response for user input.
-    def route_to_handler(self, intentDetected, userText):
+    def route_to_handler(self, **kwargs):
+        """
+        Takes intent name and necessary parameters and routes to appropriate handler.
+        Handlers include: product-info, store-info, other-concerns.
+
+        Parameters:
+            intent: name of intent
+            productName: name of product. Only required if intent is about product
+            user_input: user input. Only required if intent is about store
+        
+        Returns: text response from handlers
+        """
         #If the question is about (detected intent) product info, direct it to the product information handler. Handler returns a response to user question. 
         #If the intent is not currently handled by the bot, create a new intent for it.
-        if(intentDetected == "product-info"):
+        if("product" in kwargs["intent"]):
             if("product-info" not in self.intents):
                 self.intents["product-info"] = ProductInfoHandler()
-            response = self.intents["product-info"].handle(userText)
+            response = self.intents["product-info"].handle(kwargs["productName"], kwargs["intent"])
 
         #If the question is about (detected intent) product info, direct it to the product information handler. Handler returns a response to user question. 
-        elif(intentDetected == "store-info"):
+        elif("store" in kwargs["intent"]):
             if("store-info" not in self.intents):
                 self.intents["store-info"] = StoreInfoHandler()
-            response = self.intents["store-info"].handle(userText)
+            response = self.intents["store-info"].handle(kwargs["user_input"])
 
         #If intent cannot be detected or customer has further concerns, direct it to the other concerns handler. Handler returns a response to user question.
         else:
             if("other-concerns" not in self.intents):     
                 self.intents["other-concerns"] = OtherConcerns() 
-            response = self.intents["other-concerns"].handle()
+            response = self.intents["other-concerns"].handle(kwargs["sentimentScore"], kwargs["intent"])
         return response
