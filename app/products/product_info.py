@@ -1,4 +1,4 @@
-from app.products.database import MOCK_PRODUCT_DATA
+from app.database import MOCK_PRODUCT_DATA
 import re
 from app.products.base_handler import BaseHandler
 
@@ -14,13 +14,35 @@ class ProductInfoHandler(BaseHandler):
     def create_match_paterns(self):
         # Product-related patterns
         self.price_pattern = re.compile(
-            r"(price|cost|how much)", re.IGNORECASE)
-        self.stock_pattern = re.compile(r"(stock|how many)", re.IGNORECASE)
+            r"(price|cost|how much|money)", re.IGNORECASE)
+        self.stock_pattern = re.compile(r"(stock|how many|amount)", re.IGNORECASE)
+        self.nutrition_pattern = re.compile(
+            r"(calories|protein|carbs|carbohydrates|sugar|fat|nutrition|nutritional|weight|health|healthy)", re.IGNORECASE)
 
     def dispose(self):
         super().dispose()
 
-    def handle(self, message: str) -> str:
+    def handle_prod_intent(self, product: str, intent: str) -> str:
+        
+        intent = intent.split("-")[1] # hardcoded to filter intent: product-<intent> Ex. product-price -> intent = price
+
+        request = None
+
+        cursor = self.db.execute_query(
+            "SELECT product.id FROM product WHERE product.name = ? OR product.names = ?", 
+                params=tuple([product, product]))
+        data = cursor.fetchone()
+        if (not data):
+            return None
+        
+        request = {"request": intent, "id": data[0]}
+
+        return self.handle_product_info(None, **request)
+
+    def handle(self, message: str, intent=None) -> str: # if 2 args => message = product_name
+        if intent is not None:
+            return self.handle_prod_intent(message, intent)
+
         # Call parser
         kwargs = self.parse(message=message)
 
@@ -36,7 +58,9 @@ class ProductInfoHandler(BaseHandler):
         request = None
 
         # Check for keywords for prices
-        if self.price_pattern.search(message):
+        if self.nutrition_pattern.search(message):
+            request = "nutrition"
+        elif self.price_pattern.search(message):
             request = "price"
         elif self.stock_pattern.search(message):
             request = "stock"
@@ -77,5 +101,8 @@ class ProductInfoHandler(BaseHandler):
             else:
                 reply = "%s are out of stock." % (
                     product['names'].capitalize())
+        elif prod_msg_type == "nutrition":
+            reply = "%s Nutrition Facts: Calories = %s, Protein = %s, Carbs = %s, Sugar = %s, Fat = %s." % (
+                product['name'].capitalize(), product['calories'], product['protein'], product['carbs'], product['sugar'], product['fat'])
 
         return reply
