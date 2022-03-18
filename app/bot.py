@@ -82,14 +82,17 @@ class Bot:
                 self.undetected_intent_count = 0
             # if user asks for refund or if bot has not understood the user intent more than 3 times, 
             # direct to other concerns handler in route_to_handle
-            elif(intent == "exchange-request" or intent == "refund-request" or self.undetected_intent_count == 3):
+            elif(intent == "exchange-request" or intent == "refund-request" or intent == "feedback"):
                     self.route_to_handler(sentimentScore = response.sentiment_analysis_result.query_text_sentiment.score, intent = intent)
                     self.undetected_intent_count = 0
             # if the bot doesn't understand the user intent, 
             # ask again and increment the undetected intent count                    
             else:    
                 self.undetected_intent_count += 1
-                print("Bot: " + response.fulfillment_text)
+                if(self.undetected_intent_count == 3):
+                    self.route_to_handler(sentimentScore = 0, intent = intent)
+                else:
+                    print("Bot: " + response.fulfillment_text)
                 continue
             # continue the conversation
             print("Bot: What else can I help you?")   
