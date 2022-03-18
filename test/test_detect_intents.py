@@ -2,7 +2,7 @@ import pytest
 from app.bot import Bot
 from google.cloud import dialogflow
 
-@pytest.mark.intentDetectionTest
+@pytest.mark.intent_detection
 class TestIntentRouting:
 
     @pytest.fixture
