@@ -151,7 +151,7 @@ The database API also allows queries straight from the database.
 
 `Example import for database:`
 ```console
-from app.products.database import Database
+from app.database import Database
 ```
 
 `Database lifecycle:`
@@ -163,10 +163,10 @@ db.init_database()
 db.close()
 ```
 
-`get_product("id", int) -> List`
+`get_product("id", str) -> List`
 ```
 output = db.get_product("id", "4011")
-# returns list: [OrderedDict([('id', '4011'), ('name', 'banana'), ('names', 'bananas'), ('price', 0.67), ('price_scale', 'per kg'), ('in_stock', True)])]
+# returns list: [OrderedDict([('id', '4011'), ('name', 'banana'), ('names', 'bananas'), ('price', 0.67), ('price_scale', 'per kg'), ('in_stock', True), ('calories', 89), ('protein', '1.1 g'), ('carbs', '22.8 g'), ('sugar', '12.2 g'), ('fat', '0.3 g')])]
 ```
 
 ## New Features
