@@ -1,6 +1,5 @@
 
 from __future__ import annotations
-from datetime import date
 import sqlite3
 import os
 from enum import Enum, unique
@@ -9,17 +8,18 @@ from app.error import SQLException
 from datetime import datetime, timezone
 
 # Add data as needed
+# Add data as needed
 MOCK_PRODUCT_DATA = [
-    OrderedDict({"id": "4011", "name": "banana", "names": "bananas", "price": "0.67",
-                 "price_scale": "per kg", "in_stock": True}),
-    OrderedDict({"id": "3022", "name": "strawberry", "names": "strawberries", "price": "3.99",
-                 "price_scale": "per box", "in_stock": True}),
-    OrderedDict({"id": "2011", "name": "apple", "names": "apples", "price": "0.49",
-                 "price_scale": "per kg", "in_stock": True}),
-    OrderedDict({"id": "5044", "name": "pear", "names": "pears", "price": "0.87",
-                 "price_scale": "per kg", "in_stock": False}),
-    OrderedDict({"id": "8088", "name": "bread", "names": "bread", "price": "2.99",
-                 "price_scale": "per loaf", "in_stock": True}),
+    OrderedDict({"id": "4011", "name": "banana", "names": "bananas", "price": "0.67", "price_scale": "per kg", "in_stock": True,
+                 "calories": "89", "protein": "1.1 g", "carbs": "22.8 g", "sugar": "12.2 g", "fat": "0.3 g"}),
+    OrderedDict({"id": "3022", "name": "strawberry", "names": "strawberries", "price": "3.99", "price_scale": "per box", "in_stock": True,
+                 "calories": "11", "protein": "0.2 g", "carbs": "2.6 g", "sugar": "1.6 g", "fat": "0.1 g"}),
+    OrderedDict({"id": "2011", "name": "apple", "names": "apples", "price": "0.49", "price_scale": "per kg", "in_stock": True,
+                 "calories": "52", "protein": "0.3 g", "carbs": "13.8 g", "sugar": "10.4 g", "fat": "0.2 g"}),
+    OrderedDict({"id": "5044", "name": "pear", "names": "pears", "price": "0.87", "price_scale": "per kg", "in_stock": False,
+                 "calories": "101", "protein": "0.6 g", "carbs": "27.0 g", "sugar": "17.0 g", "fat": "0.3 g"}),
+    OrderedDict({"id": "8088", "name": "bread", "names": "bread", "price": "2.99", "price_scale": "per loaf", "in_stock": True,
+                 "calories": "82", "protein": "4.0 g", "carbs": "13.8 g", "sugar": "1.4 g", "fat": "1.1 g"}),
 ]
 
 
@@ -95,7 +95,12 @@ class Database:
                 names VARCHAR(55) NOT NULL,
                 price DECIMAL(8,2),
                 price_scale VARCHAR(10),
-                in_stock INTEGER NOT NULL
+                in_stock INTEGER NOT NULL,
+                calories INT,
+                protein VARCHAR(10),
+                carbs VARCHAR(10),
+                sugar VARCHAR(10),
+                fat VARCHAR(10)
             );
         """
         self.execute_update(create_table_sql)
@@ -103,8 +108,12 @@ class Database:
         # Insert sample product information
 
         for prod in MOCK_PRODUCT_DATA:
-            insert_data = tuple([prod['id'], prod['name'], prod['names'], prod['price'], prod['price_scale'], prod['in_stock']])
-            insert_sql = "INSERT INTO product VALUES (?, ?, ?, ?, ?, ?);"
+            insert_data = tuple(
+                [prod['id'], prod['name'], prod['names'], 
+                prod['price'], prod['price_scale'], prod['in_stock'], 
+                prod['calories'], prod['protein'], prod['carbs'], 
+                prod['sugar'], prod['fat']])
+            insert_sql = "INSERT INTO product VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
             self.execute_update(insert_sql, insert_data)
         self.conn.commit()
 
@@ -202,7 +211,12 @@ class Database:
                     "names": row[2],
                     "price": row[3],
                     "price_scale": row[4],
-                    "in_stock": True if row[5] > 0 else False
+                    "in_stock": True if row[5] > 0 else False,
+                    "calories": row[6],
+                    "protein": row[7],
+                    "carbs": row[8],
+                    "sugar": row[9],
+                    "fat": row[10]
                 }
             )
 
