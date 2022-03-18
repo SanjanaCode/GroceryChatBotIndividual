@@ -14,7 +14,7 @@ class ConvertUtilities:
                 row_data.append(str(attr))
 
             # Convert last attr
-            row_data[-1] = "1" if row_data[-1] else "0"
+            row_data[5] = "1" if row_data[5] else "0"
             result.append(",".join(row_data))
 
         return "\n".join(result)
@@ -28,7 +28,7 @@ class ConvertUtilities:
             for _, v in row.items():
                 row_data.append(str(v))
             # Convert last attr
-            row_data[-1] = "1" if row_data[-1] else "0"
+            row_data[5] = "1" if row_data[5] else "0"
             all_data.append(",".join(row_data))
 
         return "\n".join(all_data)
