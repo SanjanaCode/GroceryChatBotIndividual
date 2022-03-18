@@ -28,18 +28,26 @@ The chatbot will do so by doing a basic check of the user input, and redirecting
 
 ## Setup
 
+The Google cloud key needs to be obtained by contacting `ngan.phan@ubc.ca
+` to run the full bot.
+
 ### Windows (PowerShell)
 
 Creating virtual environment and install dependencies to run the bot:
 ```bash
-python -m venv venv
+python3 -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Setting up the environment variables for the bot (Google cloud key).
+Setting up the environment variables for the bot (Google cloud key) in PowerShell:
 ```bash
 $env:GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"
+```
+
+Setting up the environment variables for the bot (Google cloud key) in cmd:
+```bash
+set GOOGLE_APPLICATION_CREDENTIALS=KEY_PATH
 ```
 
 ### Unix (Bash)
@@ -57,7 +65,7 @@ export GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"
 
 ## Run
 ```bash
-python main.py
+python3 main.py
 ```
 
 ## Main Bot
@@ -85,7 +93,7 @@ python -m pytest
 - database
 - store_info
 - prod_info
-- intent_detection_test
+- intent_detection
 
 ```console
 python -m pytest -v -m <selected case>
@@ -179,7 +187,7 @@ With nutrition sub-topic, the bot will also provide nutrition information for th
 
 ### 5 Reasonable responses outside of the topic
 
-With 5 reasonable responses outside of the topic, the bot will provide a more fluent response to the user. This will help the user reword their question if the bot does not understand the question or variety in bot's responses, such as refund or replacement for the product, which allows for more smooth and realistic conversation.
+With 5 reasonable responses outside of the topic, the bot will provide a more fluent response to the user. This will prompt the user to rephrase their question if the bot does not understand the question. The bot also provides responses for refunds or exchanges for the product, which allows for more smooth and realistic conversation.
 
 ![response-snippet](snippets/response.png)
 
