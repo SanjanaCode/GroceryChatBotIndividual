@@ -16,14 +16,3 @@ We use Dialogflow agent to detect user's intent and respond accordingly. With th
 - `detect_intent_texts`: requests response from the Dialogflow API with user input passed from `start_conversation`.
 
 - `route_to_handler`: with hashmap, the intent passed from `start_conversation` is mapped to the correct handler classes: `ProductInfo`, `StoreInfo`, `OtherConcerns`. The handler class is then called with the user input as an argument.
-
-## Usage
-
-Currently, to use the bot, you need to contact us to get the API credentials. After having the credentials, you can use the bot by following the steps:
-
-1. Install package `pip install google-cloud-dialogflow`
-2. Set enviroment variables `GOOGLE_APPLICATION_CREDENTIALS` to the path of the API key in your device:
-Windows Power Shell: `$env:GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"`
-Windows Command Prompt: `set GOOGLE_APPLICATION_CREDENTIALS=KEY_PATH`
-Linux or MacOS: `export GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"`
-3. Run the bot using the command `python main.py`
