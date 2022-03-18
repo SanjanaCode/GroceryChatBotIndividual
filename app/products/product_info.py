@@ -28,7 +28,9 @@ class ProductInfoHandler(BaseHandler):
 
         request = None
 
-        cursor = self.db.execute_query(f"SELECT product.id FROM product WHERE product.name = '{product}' OR product.names = '{product}'")
+        cursor = self.db.execute_query(
+            "SELECT product.id FROM product WHERE product.name = ? OR product.names = ?", 
+                params=tuple([product, product]))
         data = cursor.fetchone()
         if (not data):
             return None
