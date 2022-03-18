@@ -17,12 +17,13 @@ class OtherConcerns:
         # If sentimentNum is a negative number then the text denotes a negative sentiment. 
         # If sentimentNum is a positive number then the text denotes a positive sentiment.
         # If sentimentNum is equal to zero, it's a neutral sentiment so print nothing.
-        #print("test: ",sentimentNum)
+        # print("test: ",sentimentNum)
         if(sentimentNum<0):     
             print("Bot: Sorry to hear that!")
         if(sentimentNum>0):
             print("Bot: That's great! Thank you for your feedback!")
         
+        # If the user input is negative or the bot does not understand the user intent, then resolve user concern.
         if(sentimentNum<=0):
             #If customer is asking for an exchange, direct it to the handleExchange() method.
             if(intent=="exchange-request"):
