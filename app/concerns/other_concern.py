@@ -23,36 +23,37 @@ class OtherConcerns:
         if(sentimentNum>0):
             print("Bot: That's great! Thank you for your feedback!")
         
-        #If customer is asking for an exchange, direct it to the handleExchange() method.
-        if(intent=="exchange-request"):
-            self.handleExchange()
-        #Else if customer is asking for a refund, direct it to the handleRefunds() method.  
-        elif(intent=="refund-request"):
-            self.handleRefunds()
-        #For any other concerns or when the bot is unable to understand what the customer is saying:
+        if(sentimentNum<=0):
+            #If customer is asking for an exchange, direct it to the handleExchange() method.
+            if(intent=="exchange-request"):
+                self.handleExchange()
+            #Else if customer is asking for a refund, direct it to the handleRefunds() method.  
+            elif(intent=="refund-request"):
+                self.handleRefunds()
+            #For any other concerns or when the bot is unable to understand what the customer is saying:
 
-        else:
-            #Ask user if they would want to visit store
-            print("Bot: Would you like to visit our store to resolve your concerns?")
-            userInput = input("You: ").lower() 
-            #if yes, give them store info.   
-            if(userInput=='yes'):
-                print("Bot: Here is our store address: Walmart\n 123 Main Street\n Toronto, Ontario\n M5V 2K7.")
-
-            #Else ask if they would like to be contacted by phone. Collect their phone number/email and a short description of concerns. If yes, store their info in database. If no, provide them with customer service contact number.
             else:
-                print("Bot: Would you like us to contact you by phone?")
+                #Ask user if they would want to visit store
+                print("Bot: Would you like to visit our store to resolve your concerns?")
                 userInput = input("You: ").lower() 
-                if(userInput == 'yes'):
-                    print("Bot: Please give us your phone number for our agent to contact you.")
-                    phoneNum = input("You: ")
-                    #TO DO: Store phone number in database.
-                    print("Bot: Please give us a brief description of your concern")
-                    descConcern = input("You: ")
-                    #TO DO: Store customer concern in database.
-                    print("Bot: Our customer service agent will address your issue within 24 hours.")
+                #if yes, give them store info.   
+                if(userInput=='yes'):
+                    print("Bot: Here is our store address: Walmart\n 123 Main Street\n Toronto, Ontario\n M5V 2K7.")
+
+                #Else ask if they would like to be contacted by phone. Collect their phone number/email and a short description of concerns. If yes, store their info in database. If no, provide them with customer service contact number.
                 else:
-                    print("Bot: Here is our customer service number:416-555-1234\n You can contact this number and our customer service agents will assist you.")
+                    print("Bot: Would you like us to contact you by phone?")
+                    userInput = input("You: ").lower() 
+                    if(userInput == 'yes'):
+                        print("Bot: Please give us your phone number for our agent to contact you.")
+                        phoneNum = input("You: ")
+                        #TO DO: Store phone number in database.
+                        print("Bot: Please give us a brief description of your concern")
+                        descConcern = input("You: ")
+                        #TO DO: Store customer concern in database.
+                        print("Bot: Our customer service agent will address your issue within 24 hours.")
+                    else:
+                        print("Bot: Here is our customer service number:416-555-1234\n You can contact this number and our customer service agents will assist you.")
 
     def handleExchange(self):
         """
