@@ -73,24 +73,30 @@ class Bot:
             elif("product" in intent):# intent can be product-stock or product-nutrition or product-price
                 productName = response.parameters["product-name"]
                 print("Bot: " + self.route_to_handler(productName = productName, intent = intent))
-                self.undetected_intent_count = 0
+                self.undetected_intent_count = 0 # reset the undetected intent count if bot already responded the intent
             # if user asks about store, 
             # pass to store-info in route_to_handle. 
             # Set the undetected intent count to 0
             elif(intent == "store-info"):
                 print("Bot: " + self.route_to_handler(intent = intent, user_input = user_input))
-                self.undetected_intent_count = 0
-            # if user asks for refund or if bot has not understood the user intent more than 3 times, 
+                self.undetected_intent_count = 0 # reset the undetected intent count if bot already responded the intent
+            # if user asks for exchange or refund or feedback, 
             # direct to other concerns handler in route_to_handle
-            elif(intent == "exchange-request" or intent == "refund-request" or self.undetected_intent_count == 3):
+            elif(intent == "exchange-request" or intent == "refund-request" or intent == "feedback"):
                     self.route_to_handler(sentimentScore = response.sentiment_analysis_result.query_text_sentiment.score, intent = intent)
-                    self.undetected_intent_count = 0
+                    self.undetected_intent_count = 0 # reset the undetected intent count if bot already responded the intent
             # if the bot doesn't understand the user intent, 
-            # ask again and increment the undetected intent count                    
+            # then ask for rephrase and increment the undetected intent count
+            # if the bot doesn't understand the user intent for 3 times,
+            # then set sentiment score to 0 and pass to other concerns handler in route_to_handle               
             else:    
                 self.undetected_intent_count += 1
-                print("Bot: " + response.fulfillment_text)
-                continue
+                if(self.undetected_intent_count == 3):
+                    self.route_to_handler(sentimentScore = 0, intent = intent)
+                    self.undetected_intent_count = 0 # reset the undetected intent count if bot already responded the intent
+                else:
+                    print("Bot: " + response.fulfillment_text)
+                    continue
             # continue the conversation
             print("Bot: What else can I help you?")   
     
