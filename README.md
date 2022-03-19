@@ -183,34 +183,34 @@ output = db.get_product("id", "4011")
 
 With nutrition sub-topic, the bot will also provide nutrition information for the product, which will help user decide whether to buy the product or not.
 
-![nutrition-snippet](snippets/subtopic.png)
+![nutrition-snippet](snippets/subtopic.PNG)
 
 ### 5 Reasonable responses outside of the topic
 
 With 5 reasonable responses outside of the topic, the bot will provide a more fluent response to the user. This will prompt the user to rephrase their question if the bot does not understand the question. The bot also provides responses for refunds or exchanges for the product, which allows for more smooth and realistic conversation.
 
-![response-snippet](snippets/5responses.png)
+![response-snippet](snippets/5responses.PNG)
 
 ### Spelling Mistakes
 
 With spelling mistakes handled by Google's Diagflow API, the bot will provide a more accurate response to the user.
 
-![correcttion-snippet](snippets/mistakes.png)
+![correcttion-snippet](snippets/mistakes.PNG)
 
 ### Synonym Recognition
 
 With synonym recognition handled by Google's Diagflow API, the bot will provide a more accurate response to the user.
 
-![correcttion-snippet](snippets/synonym.png)
+![correcttion-snippet](snippets/synonym.PNG)
 
 ### Named Entity Recognition
 
 With Named Entity Recognition handled by Google's Diagflow API, the bot will provide a more accurate response to the user.
 
-![correcttion-snippet](snippets/entity.png)
+![correcttion-snippet](snippets/entity.PNG)
 
 ### Sentiment Analysis
 
 With Sentiment Analysis handled by Google's Diagflow API, the bot will provide a more accurate response to the user.
 
-![correcttion-snippet](snippets/sentiment.png)
+![correcttion-snippet](snippets/sentiment.PNG)
