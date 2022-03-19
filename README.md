@@ -183,19 +183,19 @@ output = db.get_product("id", "4011")
 
 With nutrition sub-topic, the bot will also provide nutrition information for the product, which will help user decide whether to buy the product or not.
 
-![nutrition-snippet](snippets/nutrition.png)
+![nutrition-snippet](snippets/subtopic.png)
 
 ### 5 Reasonable responses outside of the topic
 
 With 5 reasonable responses outside of the topic, the bot will provide a more fluent response to the user. This will prompt the user to rephrase their question if the bot does not understand the question. The bot also provides responses for refunds or exchanges for the product, which allows for more smooth and realistic conversation.
 
-![response-snippet](snippets/response.png)
+![response-snippet](snippets/5responses.png)
 
 ### Spelling Mistakes
 
 With spelling mistakes handled by Google's Diagflow API, the bot will provide a more accurate response to the user.
 
-![correcttion-snippet](snippets/correction.png)
+![correcttion-snippet](snippets/mistakes.png)
 
 ### Synonym Recognition
 
