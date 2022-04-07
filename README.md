@@ -27,7 +27,7 @@ The chatbot will do so by doing a basic check of the user input, and redirecting
   * [Spelling Mistakes](#spelling-mistakes)
 * [New Features Implemented in the Individual Project](#New-Features-Implemented-in-Individual-Project)
   * [Distance and travel time to store](#Distance-and-travel-time-to-store)
-  * [About store (wiki summary)](#About-store-(wiki-summary))
+  * [Summary of store background information](#Summary-of-store-background-information)
 
 ## Setup
 
@@ -227,9 +227,9 @@ Using this API, the bot is able to answer questions regarding the distance and t
 
 ![correcttion-snippet](snippets/mistakes.PNG)  
 
-### About store (wiki-summary)
+### Summary of store background information
 
 API used: *Wikipedia API*  
-Using this API, the bot handles questions regarding background information about the store. Specifically, when the user asks for more information about what the store, the bot responds by providing a summary from wikipedia about the store.
+Using this API, the bot handles questions regarding background information about the store. Specifically, when the user asks for more information about the store (Our store is Walmart), the bot responds by providing a summary from wikipedia about the store.
 
 ![correcttion-snippet](snippets/synonym.PNG)
