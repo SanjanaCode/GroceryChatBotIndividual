@@ -220,6 +220,11 @@ With Sentiment Analysis handled by Google's Diagflow API, the bot will provide a
 
 ## New Features Implemented in Individual Project
 
+The following APIs are used in the individual project:
+
+* Google Directions API
+* Wikipedia API
+
 ### Distance and travel time to store
 
 API used: *Google Directions API*  
