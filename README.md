@@ -25,6 +25,9 @@ The chatbot will do so by doing a basic check of the user input, and redirecting
   * [Nutrition Sub-Topic](#nutrition-sub-topic)
   * [5 Reasonable Responses](#5-reasonable-responses-outside-of-the-topic)
   * [Spelling Mistakes](#spelling-mistakes)
+* [New Features Implemented in the Individual Project](#New-Features-Implemented-in-Individual-Project)
+  * [Distance and travel time to store](#Distance-and-travel-time-to-store)
+  * [About store (wiki summary)](#About-store-\(wiki-summary\))
 
 ## Setup
 
@@ -214,3 +217,19 @@ With Named Entity Recognition handled by Google's Diagflow API, the bot will pro
 With Sentiment Analysis handled by Google's Diagflow API, the bot will provide a more accurate response to the user.
 
 ![correcttion-snippet](snippets/sentiment.PNG)
+
+## New Features Implemented in Individual Project
+
+### Distance and travel time to store
+
+API used: *Google Directions API*  
+Using this API, the bot is able to answer questions regarding the distance and time taken to reach store. Specifically, the bot takes input about user location and based on this location, the bot responds by providing the distance to the store and the drive time  under normal traffic conditions.
+
+![correcttion-snippet](snippets/mistakes.PNG)  
+
+### About store (wiki-summary)
+
+API used: *Wikipedia API*  
+Using this API, the bot handles questions regarding background information about the store. Specifically, when the user asks for more information about what the store, the bot responds by providing a summary from wikipedia about the store.
+
+![correcttion-snippet](snippets/synonym.PNG)

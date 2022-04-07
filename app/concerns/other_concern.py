@@ -17,7 +17,7 @@ class OtherConcerns:
         # If sentimentNum is a negative number then the text denotes a negative sentiment. 
         # If sentimentNum is a positive number then the text denotes a positive sentiment.
         # If sentimentNum is equal to zero, it's a neutral sentiment so print nothing.
-        # print("test: ",sentimentNum)
+        #print("test: ",sentimentNum)
         if(sentimentNum<0):     
             print("Bot: Sorry to hear that!")
         if(sentimentNum>0):

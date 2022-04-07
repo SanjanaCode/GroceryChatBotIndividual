@@ -1,9 +1,12 @@
 from google.cloud import dialogflow
 from app.products.product_info import *
+from app.products.store_wiki import *
 from app.products.store_info import *
+from app.products.store_directions import *
 from app.concerns.other_concern import *
 import random
 import sys
+
 
 class Bot:
     """
@@ -21,7 +24,7 @@ class Bot:
         undetected_intent_count: keep track of times the intent is not detected
     """
     def __init__(self):
-        project_id = "grocery-chat-bot"
+        project_id = "chatbot-directions"
         #generate unique session id for each conversation. 
         # Session id is for continuation of conversation
         #TODO: create unique number
@@ -80,6 +83,18 @@ class Bot:
             elif(intent == "store-info"):
                 print("Bot: " + self.route_to_handler(intent = intent, user_input = user_input))
                 self.undetected_intent_count = 0 # reset the undetected intent count if bot already responded the intent
+            # if user asks about directions to store, 
+            # pass to store-info in route_to_handle. 
+            # Set the undetected intent count to 0
+            elif(intent == "Directions"):
+                self.route_to_handler(intent = intent, user_input = user_input)
+                self.undetected_intent_count = 0 # reset the undetected intent count if bot already responded the intent
+            # if user asks for information about the store or about products/brands, 
+            # pass to about-store in route_to_handle. 
+            # Set the undetected intent count to 0
+            elif(intent == "about-walmart"):
+                self.route_to_handler(intent = intent)
+                self.undetected_intent_count = 0 # reset the undetected intent count if bot already responded the intent
             # if user asks for exchange or refund or feedback, 
             # direct to other concerns handler in route_to_handle
             elif(intent == "exchange-request" or intent == "refund-request" or intent == "feedback"):
@@ -120,10 +135,9 @@ class Bot:
             response = self.session_client.detect_intent(
                 request={"session": self.session, "query_input": query_input}
             )
-            return response.query_result
+            return response.query_result     
         except:
             raise Exception("Dialogflow API error")
-
     #Based on intent, route to appropriate handler and return response for user input.
     def route_to_handler(self, **kwargs):
         """
@@ -149,6 +163,18 @@ class Bot:
             if("store-info" not in self.intents):
                 self.intents["store-info"] = StoreInfoHandler()
             response = self.intents["store-info"].handle(kwargs["user_input"])
+        
+        #If the question is about (detected intent) store directions, direct it to the store directions handler. Handler returns a response to user question. 
+        elif("Directions" in kwargs["intent"]):
+            if("Directions" not in self.intents):
+                self.intents["Directions"] = StoreDirections()
+            response = self.intents["Directions"].handle()
+
+        #If the question is about (detected intent) store background information, direct it to the about store handler. Handler returns a response to user question. 
+        elif("about-walmart" in kwargs["intent"]):
+            if("about-walmart" not in self.intents):
+                self.intents["about-walmart"] = StoreSummary()
+            response = self.intents["about-walmart"].handle()
 
         #If intent cannot be detected or customer has further concerns, direct it to the other concerns handler. Handler returns a response to user question.
         else:

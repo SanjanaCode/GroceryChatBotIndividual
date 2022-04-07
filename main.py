@@ -1,4 +1,6 @@
 from app.bot import Bot
+from app.products.store_directions import *
+from app.products.store_wiki import *
 # from dialogflow_migration.bot import Bot
 
 def main():
