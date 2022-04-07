@@ -27,7 +27,7 @@ The chatbot will do so by doing a basic check of the user input, and redirecting
   * [Spelling Mistakes](#spelling-mistakes)
 * [New Features Implemented in the Individual Project](#New-Features-Implemented-in-Individual-Project)
   * [Distance and travel time to store](#Distance-and-travel-time-to-store)
-  * [About store (wiki summary)](#About-store-\(wiki-summary\))
+  * [About store (wiki summary)](#About-store-(wiki-summary))
 
 ## Setup
 
