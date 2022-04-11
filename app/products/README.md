@@ -195,3 +195,40 @@ The keyword arguments identified by parse_product_info.
 ###### Returns
 reply: str
 The proper response for the product information request.
+
+-------------------------
+-------------------------
+-------------------------
+
+## Individual Project: New classes
+
+### Class StoreDirections
+
+This class contains methods that handle all questions that relate to directions to the store, specifically how far away and how long it takes to reach the store from user's location.
+
+###### Attributes: None
+
+-----------------------
+
+### Methods
+#### `handle()`
+
+Handles questions regarding the distance and time taken to reach store. Specifically, based a user location, the bot responds by providing the distance to the store and the drive time  under normal traffic conditions.
+###### Returns
+None
+
+----------------------
+----------------------
+### Class StoreSummary
+
+This class contains methods that handle all questions that relate to background information regarding the store (Walmart).
+###### Attributes: None
+
+-----------------------
+
+### Methods
+#### `handle()`
+
+Handles questions about background information regarding the store. Specifically, the bot responds by providing a summary from wikipedia about the store.
+###### Returns
+None
