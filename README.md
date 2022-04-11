@@ -230,11 +230,11 @@ The following APIs are used in the individual project:
 API used: *Google Directions API*  
 Using this API, the bot is able to answer questions regarding the distance and time taken to reach store. Specifically, the bot takes input about user location and based on this location, the bot responds by providing the distance to the store and the drive time  under normal traffic conditions.
 
-![correcttion-snippet](snippets/mistakes.PNG)  
+![correcttion-snippet](snippets/distancetime.PNG)  
 
 ### Summary of store background information
 
 API used: *Wikipedia API*  
 Using this API, the bot handles questions regarding background information about the store. Specifically, when the user asks for more information about the store (Our store is Walmart), the bot responds by providing a summary from wikipedia about the store.
 
-![correcttion-snippet](snippets/synonym.PNG)
+![correcttion-snippet](snippets/summarywiki.PNG)
